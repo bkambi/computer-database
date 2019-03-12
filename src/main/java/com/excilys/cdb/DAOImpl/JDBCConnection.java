@@ -28,9 +28,8 @@ public class JDBCConnection {
 	 */
 	public JDBCConnection() {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
 			connect = DriverManager.getConnection(url, user, passwd);
-		} catch (SQLException | ClassNotFoundException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
