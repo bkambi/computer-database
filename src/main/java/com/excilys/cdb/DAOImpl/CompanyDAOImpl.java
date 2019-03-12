@@ -13,7 +13,28 @@ public class CompanyDAOImpl implements CompanyDAO {
 	
 	@Override
 	public int creat(Company c) {
-		// TODO Auto-generated method stub
+		
+		String query =" Inert into company(\"name\") value(?);";
+		Connection conn = jdbcConnection.open();
+		ResultSet results =null ;
+		
+		try {
+			PreparedStatement ps = conn.prepareStatement(query);
+			ps.setString(0, c.getName());
+			results = ps.executeQuery();
+		}catch (SQLException e) {
+			System.out.println("getList : SQL Exception");
+			e.printStackTrace();
+		}
+		finally{
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 		return 0;
 	}
 
