@@ -26,10 +26,11 @@ public class JDBCConnection {
 	/**
 	 * Private constructor 
 	 */
-	private JDBCConnection() {
+	public JDBCConnection() {
 		try {
+			Class.forName("com.mysql.jdbc.Driver");
 			connect = DriverManager.getConnection(url, user, passwd);
-		} catch (SQLException e) {
+		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
@@ -39,7 +40,7 @@ public class JDBCConnection {
 	 * 
 	 * @return
 	 */
-	public static Connection open() {
+	public Connection open() {
 		if (connect == null) {
 			new JDBCConnection();
 		}
@@ -49,7 +50,7 @@ public class JDBCConnection {
 	/**
 	 * Close the connection if is not null
 	 */
-	public static void close() {
+	public void close() {
 		if (connect != null) {
 			try {
 				connect.close();

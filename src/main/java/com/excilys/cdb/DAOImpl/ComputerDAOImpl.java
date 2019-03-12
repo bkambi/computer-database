@@ -1,13 +1,20 @@
 package com.excilys.cdb.DAOImpl;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.cdb.DAO.ComputerDAO;
+import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 
 public class ComputerDAOImpl implements ComputerDAO{
 
-
+	JDBCConnection jdbcConnection = new JDBCConnection() ; ;
+	
 	@Override
 	public int creat(Computer c) {
 		// TODO Auto-generated method stub
@@ -20,10 +27,33 @@ public class ComputerDAOImpl implements ComputerDAO{
 		return null;
 	}
 
+	@SuppressWarnings("finally")
 	@Override
 	public List<Computer> getList() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<Computer> listReturn = new ArrayList<Computer>();
+		String query =" Select * FROM computer";
+		Connection conn = jdbcConnection.open();
+		
+		try {
+			PreparedStatement ps = conn.prepareStatement(query);
+			ResultSet rs = ps.executeQuery(query);
+			while(rs.next()) {
+				Computer c = new Computer(rs.getLong("id"),rs.getString("name"),rs.getTimestamp("introduced"),rs.getTimestamp("discontinued"),rs.getLong("company_id"));
+				listReturn.add(c);
+			}
+		} catch (SQLException e) {
+			System.out.println("getList : SQL Exception");
+			e.printStackTrace();
+		}finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return listReturn ;
+		}
 	}
 	
 	@Override

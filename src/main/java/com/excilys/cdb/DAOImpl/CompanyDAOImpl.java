@@ -9,6 +9,8 @@ import com.excilys.cdb.model.Company;
 
 public class CompanyDAOImpl implements CompanyDAO {
 
+	JDBCConnection jdbcConnection = new JDBCConnection() ;
+	
 	@Override
 	public int creat(Company c) {
 		// TODO Auto-generated method stub
@@ -27,18 +29,25 @@ public class CompanyDAOImpl implements CompanyDAO {
 		
 		List<Company> listReturn = new ArrayList<Company>();
 		String query =" Select * FROM company";
+		Connection conn = jdbcConnection.open();
 		
 		try {
-			PreparedStatement ps = JDBCConnection.open().prepareStatement(query);
+			PreparedStatement ps = conn.prepareStatement(query);
 			ResultSet rs = ps.executeQuery(query);
 			while(rs.next()) {
 				Company c = new Company(rs.getLong("id"),rs.getString("name"));
 				listReturn.add(c);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			System.out.println("getList : SQL Exception");
 			e.printStackTrace();
 		}finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			return listReturn ;
 		}
 	}
