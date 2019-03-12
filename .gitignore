@@ -1,6 +1,6 @@
 
-# Created by https://www.gitignore.io/api/git,java,eclipse,java-web
-# Edit at https://www.gitignore.io/?templates=git,java,eclipse,java-web
+# Created by https://www.gitignore.io/api/git,java,eclipse,java-web,linux
+# Edit at https://www.gitignore.io/?templates=git,java,eclipse,java-web,linux
 
 ### Eclipse ###
 
@@ -116,5 +116,20 @@ hs_err_pid*
 ## ignoring target file
 target/
 
-# End of https://www.gitignore.io/api/git,java,eclipse,java-web
-/build/
+### Linux ###
+*~
+
+# temporary files which can be created if a process still has a handle open of a deleted file
+.fuse_hidden*
+
+# KDE directory preferences
+.directory
+
+# Linux trash folder which might appear on any partition or disk
+.Trash-*
+
+# .nfs files are created when an open file is removed but is still being accessed
+.nfs*
+
+# End of https://www.gitignore.io/api/git,java,eclipse,java-web,linux
+
