@@ -1,8 +1,12 @@
 package com.excilys.cdb;
+
+import com.excilys.cdb.DAOImpl.CompanyDAOImpl;
+
 public class View {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		CompanyDAOImpl dao = new CompanyDAOImpl();
+		System.out.println(dao.getList());
 
 	}
 

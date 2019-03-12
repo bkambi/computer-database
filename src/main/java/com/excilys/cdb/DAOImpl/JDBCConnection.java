@@ -9,7 +9,7 @@ public class JDBCConnection {
 	/**
 	 * URL of connection of the database
 	 */
-	private String url = "jdbc:mysql://localhost:3306/CDB";
+	private String url = "jdbc:mysql://localhost:3306/computer-database-db";
 	/**
 	 * Username of the database
 	 */
