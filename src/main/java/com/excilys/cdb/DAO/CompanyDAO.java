@@ -31,11 +31,11 @@ public interface CompanyDAO {
 	 * 
 	 * @return
 	 */
-	public int update();
+	public int update(Company c);
 	/**
 	 * This method delete a Company 
 	 * @return 
 	 */
-	public int delete();
+	public int delete(Long id);
 
 }

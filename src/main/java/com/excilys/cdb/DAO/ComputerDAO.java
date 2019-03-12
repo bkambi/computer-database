@@ -31,11 +31,11 @@ public interface ComputerDAO {
 	 * 
 	 * @return
 	 */
-	public int update();
+	public int update(Computer c);
 	/**
 	 * This method delete a computer 
 	 * @return 
 	 */
-	public int delete();
+	public int delete(Long id);
 
 }

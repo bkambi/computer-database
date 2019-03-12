@@ -53,13 +53,13 @@ public class CompanyDAOImpl implements CompanyDAO {
 	}
 
 	@Override
-	public int update() {
+	public int update(Company c) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int delete() {
+	public int delete(Long id) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

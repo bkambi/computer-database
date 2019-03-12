@@ -13,7 +13,7 @@ import com.excilys.cdb.model.Computer;
 
 public class ComputerDAOImpl implements ComputerDAO{
 
-	JDBCConnection jdbcConnection = new JDBCConnection() ; ;
+	JDBCConnection jdbcConnection = new JDBCConnection() ;
 	
 	@Override
 	public int creat(Computer c) {
@@ -57,13 +57,13 @@ public class ComputerDAOImpl implements ComputerDAO{
 	}
 	
 	@Override
-	public int update() {
+	public int update(Computer c) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int delete() {
+	public int delete(Long id) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
