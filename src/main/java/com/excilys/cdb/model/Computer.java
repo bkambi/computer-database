@@ -11,6 +11,17 @@ public class Computer {
 	private Long company_id ;
 	
 	
+	public Computer() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public Computer(String name, Timestamp introduced,Timestamp discontinued, Long company_id) {
+		super();
+		this.name = name;
+		this.introduced = introduced;
+		this.discontinued = discontinued;
+		this.company_id = company_id;
+	}
 	public Computer(Long id, String name, Timestamp introduced,Timestamp discontinued, Long company_id) {
 		super();
 		this.id = id;
@@ -20,10 +31,7 @@ public class Computer {
 		this.company_id = company_id;
 	}
 	
-	public Computer() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+
 
 	public Long getId() {
 		return id;

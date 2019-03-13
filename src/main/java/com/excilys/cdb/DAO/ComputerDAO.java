@@ -17,7 +17,7 @@ public interface ComputerDAO {
 	 * match with the primary key id on the database
 	 * 
 	 * @param id The Id of the Computer wanted
-	 * @return 
+	 * @return either (1) the row count for SQL Data Manipulation Language (DML) statements or (2) 0 for SQL statements that return nothing
 	 */
 	public Computer getById(Long id);
 	/**

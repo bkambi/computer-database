@@ -17,8 +17,32 @@ public class ComputerDAOImpl implements ComputerDAO{
 	
 	@Override
 	public int creat(Computer c) {
-		// TODO Auto-generated method stub
-		return 0;
+		String query =" Insert into computer(name,introduced,discontinued,company_id) value(?,?,?,?);";
+		Connection conn = jdbcConnection.open();
+		int results =0;
+		
+		try {
+			PreparedStatement ps = conn.prepareStatement(query);
+			ps.setString(1, c.getName());
+			ps.setTimestamp(2, c.getIntroduced());
+			ps.setTimestamp(3, c.getDiscontinued());
+			ps.setLong(4, c.getCompany_id());
+			results = ps.executeUpdate();
+		}catch (SQLException e) {
+			System.out.println("creat : catch SQL Exception");
+			e.printStackTrace();
+		}
+		finally{
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				System.out.println("creat : finally catch SQL Exception");
+				e.printStackTrace();
+			}
+			
+		}
+		return results ;
+		
 	}
 
 	@Override
