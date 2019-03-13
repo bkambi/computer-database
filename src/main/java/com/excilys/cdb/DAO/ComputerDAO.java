@@ -9,7 +9,7 @@ public interface ComputerDAO {
 	 * This method add a computer on database
 	 * 
 	 * @param c The computer which we want to add in Database
-	 * @return
+	 * @return either (1) the row count for SQL Data Manipulation Language (DML) statements or (2) 0 for SQL statements that return nothing
 	 */
 	public int creat(Computer c); 
 	/**
@@ -17,7 +17,7 @@ public interface ComputerDAO {
 	 * match with the primary key id on the database
 	 * 
 	 * @param id The Id of the Computer wanted
-	 * @return either (1) the row count for SQL Data Manipulation Language (DML) statements or (2) 0 for SQL statements that return nothing
+	 * @return Computer Comes from Database
 	 */
 	public Computer getById(Long id);
 	/**
@@ -29,12 +29,12 @@ public interface ComputerDAO {
 	/**
 	 * This method update a computer on the database
 	 * 
-	 * @return
+	 * @return either (1) the row count for SQL Data Manipulation Language (DML) statements or (2) 0 for SQL statements that return nothing
 	 */
 	public int update(Computer c);
 	/**
 	 * This method delete a computer 
-	 * @return 
+	 * @return either (1) the row count for SQL Data Manipulation Language (DML) statements or (2) 0 for SQL statements that return nothing
 	 */
 	public int delete(Long id);
 

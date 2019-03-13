@@ -13,11 +13,12 @@ public class View {
 		CompanyDAOImpl daoCompany = new CompanyDAOImpl();
 		//System.out.println(daoCompany.getList());
 		//daoCompany.creat(new Company("Excilys"));
-		
+		//daoCompany.delete(44L);
 		
 		ComputerDAOImpl daoComputer = new ComputerDAOImpl();
 		//System.out.println(daoComputer.getList());
 		//daoComputer.creat(new Computer("Excilys-Computer-G7",new Timestamp(System.currentTimeMillis()),new Timestamp(System.currentTimeMillis()),44L));
+		//daoComputer.delete(575L);
 	}
 
 }

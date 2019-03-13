@@ -81,8 +81,29 @@ public class CompanyDAOImpl implements CompanyDAO {
 
 	@Override
 	public int delete(Long id) {
-		// TODO Auto-generated method stub
-		return 0;
+		//TODO CASCADE DELETE ATFER (IT DOESN'T WORK)
+		String query ="DELETE FROM company WHERE id = ?";
+		Connection conn = jdbcConnection.open();
+		int results =0;
+		
+		try {
+			PreparedStatement ps = conn.prepareStatement(query);
+			ps.setLong(1, id);
+			results = ps.executeUpdate();
+		}catch (SQLException e) {
+			System.out.println("delete : catch SQL Exception");
+			e.printStackTrace();
+		}
+		finally{
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				System.out.println("delete : finally catch SQL Exception");
+				e.printStackTrace();
+			}
+		}
+		
+		return results ;
 	}
 
 }

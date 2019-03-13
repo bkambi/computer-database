@@ -17,7 +17,7 @@ public interface CompanyDAO {
 	 * match with the primary key id on the database
 	 * 
 	 * @param id The Id of the Company wanted
-	 * @return 
+	 * @return Company Comes from Database
 	 */
 	public Company getById(Long id);
 	/**
@@ -29,12 +29,12 @@ public interface CompanyDAO {
 	/**
 	 * This method update a Company on the database
 	 * 
-	 * @return
+	 * @return either (1) the row count for SQL Data Manipulation Language (DML) statements or (2) 0 for SQL statements that return nothing
 	 */
 	public int update(Company c);
 	/**
 	 * This method delete a Company 
-	 * @return 
+	 * @return either (1) the row count for SQL Data Manipulation Language (DML) statements or (2) 0 for SQL statements that return nothing
 	 */
 	public int delete(Long id);
 
