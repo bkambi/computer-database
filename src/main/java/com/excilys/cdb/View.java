@@ -20,6 +20,7 @@ public class View {
 		//daoComputer.creat(new Computer("Excilys-Computer-G7",new Timestamp(System.currentTimeMillis()),new Timestamp(System.currentTimeMillis()),44L));
 		//daoComputer.delete(575L);
 		//daoComputer.update(new Computer(576L,"Excilys-Computer-G7",new Timestamp(System.currentTimeMillis()),new Timestamp(System.currentTimeMillis()),44L));
+		System.out.println(daoComputer.getById(574L));
 	}
 
 }

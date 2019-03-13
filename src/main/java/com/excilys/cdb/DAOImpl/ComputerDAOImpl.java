@@ -47,8 +47,40 @@ public class ComputerDAOImpl implements ComputerDAO{
 
 	@Override
 	public Computer getById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+
+		String query ="SELECT * FROM computer where id = ?;";
+		Connection conn = jdbcConnection.open();
+		
+		//ResultSet rs =null ;
+		try {
+			PreparedStatement ps = conn.prepareStatement(query);
+			System.out.println(ps);
+			ps.setLong(1, id);
+			System.out.println(ps);
+			ResultSet rs = ps.executeQuery();
+			Computer c = new Computer() ;
+			if (rs.next()) {
+				 c.setId(rs.getLong("id"));
+				 c.setName(rs.getString("name"));
+				 c.setIntroduced(rs.getTimestamp("introduced"));
+				 c.setDiscontinued(rs.getTimestamp("discontinued"));
+				 c.setCompany_id(rs.getLong("company_id"));
+			}
+			return c ;
+		} catch (SQLException e) {
+			System.out.println("getById : SQL Exception");
+			e.printStackTrace();
+			return new Computer() ;
+		}finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
 	}
 
 	@SuppressWarnings("finally")
