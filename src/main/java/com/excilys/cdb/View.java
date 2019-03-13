@@ -61,6 +61,7 @@ public class View {
 			case "5": 
 				break;
 			case "6": 
+				deleteComputerInDatabase();
 				break;
 			} 
 		}
@@ -138,8 +139,29 @@ public class View {
 			}
 		}
 	}
-	public static void updateComputerInDatabase() {}
-	public static void deleteComputerInDatabase() {}
+	public static void updateComputerInDatabase() {
+		
+	}
+	public static void deleteComputerInDatabase() {
+		String forthEnter ="";
+		ComputerDAOImpl daoComputer = new ComputerDAOImpl();
+		while(!forthEnter.equals("q")) {
+			System.out.println("Entrer un id ou quitter(q): \n " + 
+					" =============================================== \n");
+			Scanner sc = new Scanner(System.in);
+			forthEnter = sc.nextLine();
+			if( !forthEnter.equals("q")){
+				try{
+					Long id = Long.parseLong(forthEnter);
+					System.out.println(daoComputer.delete(id));
+					}catch(NumberFormatException e) {
+						e.printStackTrace();
+						System.out.println("deleteComputerInDatabase : Number Format Exception");
+					}
+			}
+			System.out.println("\n");
+		}
+	}
 	
 	public static Timestamp castStringToTimestamp(String dateString) {
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
