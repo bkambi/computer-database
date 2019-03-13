@@ -54,9 +54,7 @@ public class ComputerDAOImpl implements ComputerDAO{
 		//ResultSet rs =null ;
 		try {
 			PreparedStatement ps = conn.prepareStatement(query);
-			System.out.println(ps);
 			ps.setLong(1, id);
-			System.out.println(ps);
 			ResultSet rs = ps.executeQuery();
 			Computer c = new Computer() ;
 			if (rs.next()) {
