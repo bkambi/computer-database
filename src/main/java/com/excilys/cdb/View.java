@@ -5,6 +5,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Scanner;
 
@@ -29,6 +31,7 @@ public class View {
 		
 		//CompanyDAOImpl daoCompany = new CompanyDAOImpl();
 		//ComputerDAOImpl daoComputer = new ComputerDAOImpl();
+		
 		String firstEnter ="";
 		String instruction = " Tapez un numéro ou quittez (q)! \n" + 
 				" =============================================== \n" + 
@@ -70,12 +73,21 @@ public class View {
 	
 	public static void showListComputer() {
 		ComputerDAOImpl daoComputer = new ComputerDAOImpl();
-		System.out.println(daoComputer.getList());
+		List<Computer> listeComputer = new ArrayList<Computer>();
+		listeComputer = daoComputer.getList() ;
+		for (Computer c : listeComputer) {
+			System.out.println(c);
+			
+		}
 		System.out.println("\n");
 	}
 	public static void showListCompany(){
 		CompanyDAOImpl daoCompany = new CompanyDAOImpl();
-		System.out.println(daoCompany.getList());
+		List<Company> listeCompany = new ArrayList<Company>();
+		for (Company c : listeCompany) {
+			System.out.println(c);
+			
+		}
 		System.out.println("\n");
 	}
 	public static void showDetailsOfThisComputer() {
