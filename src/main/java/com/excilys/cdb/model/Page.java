@@ -2,6 +2,8 @@ package com.excilys.cdb.model;
 
 import java.util.List;
 
+import com.excilys.cdb.util.enume.Instruction;
+
 public class Page {
 	
 	private String title ;
@@ -55,6 +57,10 @@ public class Page {
 		this.listeComputer = listeComputer;
 	}
 
+	public String showInstruction(Instruction instruction) {
+		return instruction.getDetailInstruction();
+	}
+	
 	@Override
 	public String toString() {
 		return "Page [title=" + title + ", header=" + header + ", footer=" + footer + ", listeCompany=" + listeCompany
