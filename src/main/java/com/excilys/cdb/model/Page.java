@@ -57,10 +57,6 @@ public class Page {
 		this.listeComputer = listeComputer;
 	}
 
-	public String showInstruction(Instruction instruction) {
-		return instruction.getDetailInstruction();
-	}
-	
 	@Override
 	public String toString() {
 		return "Page [title=" + title + ", header=" + header + ", footer=" + footer + ", listeCompany=" + listeCompany
