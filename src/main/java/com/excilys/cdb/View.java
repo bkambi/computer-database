@@ -17,21 +17,7 @@ import com.excilys.cdb.model.Computer;
 
 public class View {
 
-	public static void main(String[] args) {
-		/*CompanyDAOImpl daoCompany = new CompanyDAOImpl();
-		System.out.println(daoCompany.getList());
-		daoCompany.creat(new Company("Excilys"));
-		daoCompany.delete(44L);
-		ComputerDAOImpl daoComputer = new ComputerDAOImpl();
-		System.out.println(daoComputer.getList());
-		daoComputer.creat(new Computer("Excilys-Computer-G7",new Timestamp(System.currentTimeMillis()),new Timestamp(System.currentTimeMillis()),44L));
-		daoComputer.delete(575L);
-		daoComputer.update(new Computer(576L,"Excilys-Computer-G7",new Timestamp(System.currentTimeMillis()),new Timestamp(System.currentTimeMillis()),44L));
-		System.out.println(daoComputer.getById(574L));*/
-		
-		//CompanyDAOImpl daoCompany = new CompanyDAOImpl();
-		//ComputerDAOImpl daoComputer = new ComputerDAOImpl();
-		
+	public static void main(String[] args) {	
 		String firstEnter ="";
 		String instruction = " Tapez un numéro ou quittez (q)! \n" + 
 				" =============================================== \n" + 

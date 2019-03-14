@@ -6,6 +6,7 @@ public class Page {
 	
 	private String title ;
 	private String header ;
+	private String Body ;
 	private String footer ;
 	private List<Company> listeCompany ;
 	private List<Computer> listeComputer;
@@ -27,6 +28,14 @@ public class Page {
 	public void setHeader(String header) {
 		this.header = header;
 	}
+	public String getBody() {
+		return Body;
+	}
+
+	public void setBody(String body) {
+		Body = body;
+	}
+
 	public String getFooter() {
 		return footer;
 	}
