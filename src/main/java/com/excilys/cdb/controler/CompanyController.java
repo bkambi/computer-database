@@ -3,11 +3,15 @@ package com.excilys.cdb.controler;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.excilys.cdb.DAOImpl.CompanyDAOImpl;
 import com.excilys.cdb.model.Company;
 
 public class CompanyController {
-
+	
+	private  Logger logger ;
+	
 	private String stringRetour;
 	/**
 	 * 

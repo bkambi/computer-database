@@ -2,15 +2,24 @@ package com.excilys.cdb;
 
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+
 import com.excilys.cdb.controler.CompanyController;
 import com.excilys.cdb.controler.ComputerController;
+import com.excilys.cdb.model.LogConfigurator;
 import com.excilys.cdb.model.Page;
 import com.excilys.cdb.util.enume.Choix;
 import com.excilys.cdb.util.enume.Instruction;
 
 public class View {
 
+	private static Logger logger;
+
 	public static void main(String[] args) {
+
+		LogConfigurator.addProperties();
+
+		logger = Logger.getLogger(View.class.getName());
 
 		Page page = new Page();
 		String firstEnter = "";
@@ -30,8 +39,8 @@ public class View {
 	public static void checkChoix(String choix) {
 		int value = castToEntier(choix);
 		CompanyController companyController = new CompanyController();
-		ComputerController computerController =new ComputerController();
-		switch (Choix.values()[value-1]) {
+		ComputerController computerController = new ComputerController();
+		switch (Choix.values()[value - 1]) {
 		case LIST_COMPUTER:
 			System.out.println(computerController.showListComputer());
 			break;
@@ -63,6 +72,7 @@ public class View {
 			Integer.parseInt(entier);
 			return true;
 		} catch (NumberFormatException e) {
+			logger.error("Number Format Exception");
 			e.printStackTrace();
 			return false;
 		}
@@ -72,6 +82,7 @@ public class View {
 		try {
 			return Integer.parseInt(entier);
 		} catch (NumberFormatException e) {
+			logger.error("Number Format Exception");
 			e.printStackTrace();
 			return 0;
 		}

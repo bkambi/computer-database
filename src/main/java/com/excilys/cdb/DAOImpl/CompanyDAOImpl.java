@@ -4,16 +4,21 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
+import com.excilys.cdb.View;
 import com.excilys.cdb.DAO.CompanyDAO;
 import com.excilys.cdb.model.Company;
+import com.excilys.cdb.model.LogConfigurator;
 
 public class CompanyDAOImpl implements CompanyDAO {
 
+	private  Logger logger ;
 	JDBCConnection jdbcConnection = new JDBCConnection() ;
 	
 	@Override
 	public int creat(Company c) {
-		
+		logger = LogConfigurator.configureLoggerIfNull(logger,CompanyDAOImpl.class.getName());
 		String query =" Insert into company(name) value(?)";
 		Connection conn = jdbcConnection.open();
 		int results =0;
@@ -23,14 +28,16 @@ public class CompanyDAOImpl implements CompanyDAO {
 			ps.setString(1, c.getName());
 			results = ps.executeUpdate();
 		}catch (SQLException e) {
-			System.out.println("creat : catch SQL Exception");
+			//System.out.println("creat : catch SQL Exception");
+			logger.error("creat : catch SQL Exception");
 			e.printStackTrace();
 		}
 		finally{
 			try {
 				conn.close();
 			} catch (SQLException e) {
-				System.out.println("creat : finally catch SQL Exception");
+				//System.out.println("creat : finally catch SQL Exception");
+				logger.error("creat : catch SQL Exception");
 				e.printStackTrace();
 			}
 		}
@@ -47,7 +54,7 @@ public class CompanyDAOImpl implements CompanyDAO {
 	@SuppressWarnings("finally")
 	@Override
 	public List<Company> getList() {
-		
+		logger = LogConfigurator.configureLoggerIfNull(logger,CompanyDAOImpl.class.getName());
 		List<Company> listReturn = new ArrayList<Company>();
 		String query =" Select * FROM company";
 		Connection conn = jdbcConnection.open();
@@ -60,7 +67,8 @@ public class CompanyDAOImpl implements CompanyDAO {
 				listReturn.add(c);
 			}
 		} catch (SQLException e) {
-			System.out.println("getList : SQL Exception");
+			//System.out.println("getList : SQL Exception");
+			logger.error("getList : SQL Exception");
 			e.printStackTrace();
 		}finally {
 			try {
@@ -81,6 +89,7 @@ public class CompanyDAOImpl implements CompanyDAO {
 
 	@Override
 	public int delete(Long id) {
+		logger = LogConfigurator.configureLoggerIfNull(logger,CompanyDAOImpl.class.getName());
 		//TODO CASCADE DELETE ATFER (IT DOESN'T WORK)
 		String query ="DELETE FROM company WHERE id = ?";
 		Connection conn = jdbcConnection.open();
@@ -91,19 +100,21 @@ public class CompanyDAOImpl implements CompanyDAO {
 			ps.setLong(1, id);
 			results = ps.executeUpdate();
 		}catch (SQLException e) {
-			System.out.println("delete : catch SQL Exception");
+			//System.out.println("delete : catch SQL Exception");
+			logger.error("delete : catch SQL Exception");
 			e.printStackTrace();
 		}
 		finally{
 			try {
 				conn.close();
 			} catch (SQLException e) {
-				System.out.println("delete : finally catch SQL Exception");
+				//System.out.println("delete : finally catch SQL Exception");
+				logger.error("delete : finally catch SQL Exception");
 				e.printStackTrace();
 			}
 		}
 		
 		return results ;
 	}
-
+	
 }

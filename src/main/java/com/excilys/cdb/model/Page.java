@@ -10,6 +10,7 @@ public class Page {
 	private String header ;
 	private String Body ;
 	private String footer ;
+	private int indice ;
 	private List<Company> listeCompany ;
 	private List<Computer> listeComputer;
 	
@@ -44,6 +45,15 @@ public class Page {
 	public void setFooter(String footer) {
 		this.footer = footer;
 	}
+	
+	public int getIndice() {
+		return indice;
+	}
+
+	public void setIndice(int indice) {
+		this.indice = indice;
+	}
+
 	public List<Company> getListeCompany() {
 		return listeCompany;
 	}
