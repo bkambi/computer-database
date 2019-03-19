@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 
-import com.excilys.cdb.controler.CompanyController;
-import com.excilys.cdb.controler.ComputerController;
+import com.excilys.cdb.controller.CompanyController;
+import com.excilys.cdb.controller.ComputerController;
 import com.excilys.cdb.model.LogConfigurator;
 import com.excilys.cdb.model.Page;
 import com.excilys.cdb.util.enume.Choix;

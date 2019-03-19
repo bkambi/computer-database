@@ -1,4 +1,4 @@
-package com.excilys.cdb.controler;
+package com.excilys.cdb.controller;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;

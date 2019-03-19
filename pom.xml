@@ -18,6 +18,7 @@
 		<compiler.plugin.version>3.7.0</compiler.plugin.version>
 		<checkstyle.plugin.version>3.0.0</checkstyle.plugin.version>
 		<war.plugin.version>3.2.1</war.plugin.version>
+		<jstl.version>1.2</jstl.version>
 	</properties>
 
 	<dependencies>
@@ -59,6 +60,13 @@
 			<version>${servlet.api.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/jstl/jstl -->
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>${jstl.version}</version>
+		</dependency>
+
 	</dependencies>
 
 	<reporting>
