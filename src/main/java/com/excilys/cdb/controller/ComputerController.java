@@ -20,23 +20,24 @@ public class ComputerController {
 
 	private Logger logger;
 	private String stringRetour;
+	private Page pageDashboard = new Page();
 
 	/**
 	 * This method print all computer on the database
 	 * 
 	 * @return String list of all Computer
 	 */
-	public String showListComputer() {
+	public void setListComputer() {
 		logger = LogConfigurator.configureLoggerIfNull(logger, ComputerController.class.getName());
 		stringRetour = "";
 		ComputerDAOImpl daoComputer = new ComputerDAOImpl();
-		List<Computer> listeComputer = new ArrayList<Computer>();
-		listeComputer = daoComputer.getList();
-		for (Computer c : listeComputer) {
-			stringRetour += c.toString() + "\n";
-		}
-		return stringRetour;
+		pageDashboard.setListeComputer(daoComputer.getList());
+		/*
+		 * for (Computer c : listeComputer) { stringRetour += c.toString() + "\n"; }
+		 * return stringRetour;
+		 */
 	}
+
 	/**
 	 * This method print all computer on the database
 	 * 
@@ -209,68 +210,42 @@ public class ComputerController {
 		return sc.nextLine();
 	}
 
-	public void pagination(Page page) {
+	public void showListeComputer() {
 
-		String stop ="N" ;
-		int indice = page.getIndice();
-		int numberOfComputer = page.getNumberOfComputer();
 		ComputerDAOImpl daoComputer = new ComputerDAOImpl();
-		List<Computer> listeComputer = new ArrayList<Computer>();
-		listeComputer = daoComputer.getList();
-
-		List<List<Computer>> listePagination = new ArrayList<List<Computer>>();
-
-		logger = LogConfigurator.configureLoggerIfNull(logger, ComputerController.class.getName());
-		stringRetour = "";
-
-//		System.out.println("Choose number of page for the visualiation between(10,50,and 100);");
-//
-//		String stringNumber = lireEntrerClavier();
-
-		try {
-//			numberOfComputer = Integer.parseInt(stringNumber);
-//			numberOfComputer =100 ;
-//			int paginationMax = listeComputer.size()/2/ numberOfComputer;
-//			if (numberOfComputer == 10 || numberOfComputer == 50 || numberOfComputer == 100) {
-//				for (int i = 0; i < 1; i = i++) {
-//					int fromIndex = i * numberOfComputer;
-//					int toIndex = fromIndex + numberOfComputer;
-//					listePagination.add(listeComputer.subList(fromIndex, toIndex));
-//				}
-//				logger.info(stringRetour);
-//			}
-				listePagination.add(listeComputer.subList(0, 100));
-				System.out.println(listeComputer.subList(0, 100));
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-			stringRetour = "deleteComputerInDatabase : Number Format Exception \n";
-			logger.error(stringRetour);
-			
-		}
-			page.setNumberOfComputer(numberOfComputer);
+		pageDashboard.setListeComputer(daoComputer.getList());
+		pageDashboard.setIndice(0);
+		pageDashboard.updateListComputerWithNewNumberOfComputer(100);
 		
+		int nextIndice =0;
+		String stop = "N";
 		while (stop.equals("N")) {
-			String listeStringComputer = returnListComputer(listePagination.get(indice));
-			System.out.println(listePagination.get(indice));
-			String sortie = listeStringComputer +"\n<-- ";
-			for(int i = indice ;i < indice+5 ;i++) {
-				sortie+=String.valueOf(i) +" "+"|";
+
+			String listeStringComputer = "";
+			for (Computer c : pageDashboard.getListeComputerToShow()) {
+				listeStringComputer += c.toString() + "\n";
 			}
-			sortie+= "--> \n Choose a index or presse \"Y\" to quite ";
+			String sortie = listeStringComputer + "\n<-- ";
+			int max = pageDashboard.getListeComputer().size() / pageDashboard.getNumberOfComputer();
+			for (int i = pageDashboard.getIndice(); i < max; i++) {
+				sortie += String.valueOf(i) + " " + "|";
+			}
+			sortie += "--> \n Choose a index or presse \"Y\" to quite ";
 			System.out.println(sortie);
-			String nextStringIndice = lireEntrerClavier() ;
+			String nextStringIndice = lireEntrerClavier();
+			
+			if (nextStringIndice.toUpperCase().equals("Y")) {
+				break;
+			}
 			
 			try {
-				indice = Integer.parseInt(nextStringIndice);
-				
+				nextIndice = Integer.parseInt(nextStringIndice);
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 				stringRetour = "deleteComputerInDatabase : Number Format Exception \n";
 				logger.error(stringRetour);
-				
 			}
-				page.setIndice(indice);
-			
+			pageDashboard.updateListComputerWithNewIndice((nextIndice < max) ? nextIndice : 0);
 		}
 	}
 

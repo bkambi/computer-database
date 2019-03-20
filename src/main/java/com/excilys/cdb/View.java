@@ -48,7 +48,7 @@ public class View {
 		switch (Choix.values()[value - 1]) {
 		case LIST_COMPUTER:
 			//System.out.println(computerController.showListComputer());
-			computerController.pagination(page);
+			computerController.showListeComputer();
 			break;
 		case LIST_COMPANY:
 			System.out.println(companyController.showListCompany());

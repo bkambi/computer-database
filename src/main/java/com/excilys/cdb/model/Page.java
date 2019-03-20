@@ -2,6 +2,8 @@ package com.excilys.cdb.model;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.excilys.cdb.util.enume.Instruction;
 
 public class Page {
@@ -14,6 +16,7 @@ public class Page {
 	private int numberOfComputer ;
 	private List<Company> listeCompany ;
 	private List<Computer> listeComputer;
+	private List<Computer> listeComputerToShow;
 	
 	public Page() {
 		super();
@@ -75,11 +78,33 @@ public class Page {
 	public void setListeComputer(List<Computer> listeComputer) {
 		this.listeComputer = listeComputer;
 	}
+	
+	public List<Computer> getListeComputerToShow() {
+		return listeComputerToShow;
+	}
+
+	public void setListeComputerToShow(List<Computer> listeComputerToShow) {
+		this.listeComputerToShow = listeComputerToShow;
+	}
 
 	@Override
 	public String toString() {
 		return "Page [title=" + title + ", header=" + header + ", footer=" + footer + ", listeCompany=" + listeCompany
 				+ ", listeComputer=" + listeComputer + "]";
+	}
+	
+	public void updateListComputerWithNewIndice(int indice) {
+			this.setIndice(indice); 
+			int fromIndex = indice*numberOfComputer;
+			int toIndex = fromIndex + numberOfComputer;
+			this.setListeComputerToShow(listeComputer.subList(fromIndex, toIndex));
+	}
+	
+	public void updateListComputerWithNewNumberOfComputer(int numberOfComputer){
+		this.setNumberOfComputer(numberOfComputer);
+		int fromIndex = indice*numberOfComputer;
+		int toIndex = fromIndex + numberOfComputer;
+		this.setListeComputerToShow(listeComputer.subList(fromIndex, toIndex));
 	}
 	
 	
