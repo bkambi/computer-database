@@ -11,6 +11,7 @@ public class Page {
 	private String Body ;
 	private String footer ;
 	private int indice ;
+	private int numberOfComputer ;
 	private List<Company> listeCompany ;
 	private List<Computer> listeComputer;
 	
@@ -52,6 +53,14 @@ public class Page {
 
 	public void setIndice(int indice) {
 		this.indice = indice;
+	}
+
+	public int getNumberOfComputer() {
+		return numberOfComputer;
+	}
+
+	public void setNumberOfComputer(int numberOfComputer) {
+		this.numberOfComputer = numberOfComputer;
 	}
 
 	public List<Company> getListeCompany() {

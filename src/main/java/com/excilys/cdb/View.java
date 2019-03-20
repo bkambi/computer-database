@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 
+import com.excilys.cdb.DAO.ComputerDAO;
+import com.excilys.cdb.DAOImpl.ComputerDAOImpl;
 import com.excilys.cdb.controller.CompanyController;
 import com.excilys.cdb.controller.ComputerController;
 import com.excilys.cdb.model.LogConfigurator;
@@ -37,12 +39,16 @@ public class View {
 	}
 
 	public static void checkChoix(String choix) {
+		Page page= new Page ();
+		page.setIndice(0);
+		page.setNumberOfComputer(10);
 		int value = castToEntier(choix);
 		CompanyController companyController = new CompanyController();
 		ComputerController computerController = new ComputerController();
 		switch (Choix.values()[value - 1]) {
 		case LIST_COMPUTER:
-			System.out.println(computerController.showListComputer());
+			//System.out.println(computerController.showListComputer());
+			computerController.pagination(page);
 			break;
 		case LIST_COMPANY:
 			System.out.println(companyController.showListCompany());
