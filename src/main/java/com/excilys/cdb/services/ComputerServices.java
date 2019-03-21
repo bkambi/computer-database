@@ -21,11 +21,9 @@ public class ComputerServices {
 	 daoComputer.getList();
 
 	 
-<<<<<<< HEAD
+
 	 return Optional.ofNullable(listComputerDTO);
-=======
-	 return Optional.ofNullable(List<ComputerDTO>);
->>>>>>> c22f0a2317b3e569e51846cbb73ce4c89f9d347e
+
  }
  /**
   * Add a Computer in the data base using the method of the DAO
