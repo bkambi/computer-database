@@ -21,7 +21,7 @@ public class ComputerServices {
 	 daoComputer.getList();
 
 	 
-	 return Optional.ofNullable(List<ComputerDTO>);
+	 return Optional.ofNullable(listComputerDTO);
  }
  /**
   * Add a Computer in the data base using the method of the DAO
