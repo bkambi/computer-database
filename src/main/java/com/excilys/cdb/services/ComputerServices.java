@@ -48,9 +48,20 @@ public class ComputerServices {
 	/**
 	 * Add a Computer in the data base using the method of the DAO
 	 */
-	public static void addComputerService() {
-
-	}
+	/*private static void handleRequestForAddComputer(HttpServletRequest request) {
+	String computerName =(String) request.getAttribute("computerName");
+	String introduced =(String) request.getAttribute("computerName");
+	String discontinued =(String) request.getAttribute("discontinued");
+	String companyId = (String)request.getAttribute("companyId");
+	
+	Computer computer = new Computer();
+	computer.setName(computerName);
+	computer.setIntroduced(introduced);
+	computer.setDiscontinued(discontinued);
+	computer.setId(companyId);
+	
+	dao.creat(computer);
+}*/
 
 	public static List<String> getListIndice() {
 		List<String> listIndiceRetour = new ArrayList<String>();
