@@ -9,10 +9,19 @@ import com.excilys.cdb.model.Computer;
 
 public class ComputerMapper {
 
-	public static ComputerDTO mapDTO(Computer computer, Company company) {
-		ComputerDTO c = new ComputerDTO.ComputerDTOBuilder().setId(computer.getId()).setName(computer.getName())
-				.setIntroduced(computer.getIntroduced().toString())
-				.setDiscontinued(computer.getDiscontinued().toString()).setCompany(company.getName()).build();
+	/**
+	 * Cast Computer and Company to ComputerDTO
+	 * @param computer
+	 * @param company
+	 * @return
+	 */
+	public static ComputerDTO mapDTO(Computer computer, String company) {
+		ComputerDTO c = new ComputerDTO.ComputerDTOBuilder()
+				.setId(computer.getId())
+				.setName(computer.getName())
+				.setIntroduced(computer.getIntroduced() != null ?computer.getIntroduced().toString() :  "")
+				.setDiscontinued(computer.getDiscontinued() != null ?computer.getDiscontinued().toString() :"")
+				.setCompany(company).build();
 		return c;
 
 	}

@@ -95,15 +95,15 @@ public class Page {
 	
 	public void updateListComputerWithNewIndice(int indice) {
 			this.setIndice(indice); 
-			int fromIndex = indice*numberOfComputer;
-			int toIndex = fromIndex + numberOfComputer;
+			int fromIndex = (indice*numberOfComputer) <= listeComputer.size()-1 ? (indice*numberOfComputer) : listeComputer.size()-1-numberOfComputer;
+			int toIndex = (fromIndex + numberOfComputer) <= listeComputer.size()-1 ? (fromIndex + numberOfComputer) : listeComputer.size() -1;
 			this.setListeComputerToShow(listeComputer.subList(fromIndex, toIndex));
 	}
 	
 	public void updateListComputerWithNewNumberOfComputer(int numberOfComputer){
 		this.setNumberOfComputer(numberOfComputer);
-		int fromIndex = indice*numberOfComputer;
-		int toIndex = fromIndex + numberOfComputer;
+		int fromIndex = (indice*numberOfComputer) <= listeComputer.size()-1 ? (indice*numberOfComputer) : listeComputer.size()-1-numberOfComputer;
+		int toIndex = (fromIndex + numberOfComputer) <= listeComputer.size()-1 ? (fromIndex + numberOfComputer) : listeComputer.size()-1 ;
 		this.setListeComputerToShow(listeComputer.subList(fromIndex, toIndex));
 	}
 	

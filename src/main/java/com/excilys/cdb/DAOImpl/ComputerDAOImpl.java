@@ -10,20 +10,16 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.excilys.cdb.View;
-import com.excilys.cdb.DAO.ComputerDAO;
-import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.LogConfigurator;
 
-public class ComputerDAOImpl implements ComputerDAO{
+public class ComputerDAOImpl {
 
-	private  Logger logger ;
-	JDBCConnection jdbcConnection = new JDBCConnection() ;
-	
-	@Override
+	private  Logger logger = Logger.getLogger(ComputerDAOImpl.class.getName());
 	public int creat(Computer c) {
-		logger = LogConfigurator.configureLoggerIfNull(logger,ComputerDAOImpl.class.getName());
+		//logger = LogConfigurator.configureLoggerIfNull(logger,ComputerDAOImpl.class.getName());
 		String query =" Insert into computer(name,introduced,discontinued,company_id) value(?,?,?,?);";
+		JDBCConnection jdbcConnection = new JDBCConnection();
 		Connection conn = jdbcConnection.open();
 		int results =0;
 		
@@ -53,10 +49,12 @@ public class ComputerDAOImpl implements ComputerDAO{
 		
 	}
 
-	@Override
+
 	public Computer getById(Long id) {
-		logger = LogConfigurator.configureLoggerIfNull(logger,ComputerDAOImpl.class.getName());
+		//logger = LogConfigurator.configureLoggerIfNull(logger,ComputerDAOImpl.class.getName());
+		
 		String query ="SELECT * FROM computer where id = ?;";
+		JDBCConnection jdbcConnection = new JDBCConnection();
 		Connection conn = jdbcConnection.open();
 		
 		//ResultSet rs =null ;
@@ -89,12 +87,11 @@ public class ComputerDAOImpl implements ComputerDAO{
 		}
 		
 	}
-	@SuppressWarnings("finally")
-	@Override
 	public List<Computer> getList() {
-		logger = LogConfigurator.configureLoggerIfNull(logger,ComputerDAOImpl.class.getName());
+		//logger = LogConfigurator.configureLoggerIfNull(logger,ComputerDAOImpl.class.getName());
 		List<Computer> listReturn = new ArrayList<Computer>();
 		String query =" Select * FROM computer";
+		JDBCConnection jdbcConnection = new JDBCConnection();
 		Connection conn = jdbcConnection.open();
 		
 		try {
@@ -108,21 +105,23 @@ public class ComputerDAOImpl implements ComputerDAO{
 			//System.out.println("getList : SQL Exception");
 			logger.error("getList : SQL Exception");
 			e.printStackTrace();
-		}finally {
+		}
+		finally{
 			try {
 				conn.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+				//System.out.println("creat : finally catch SQL Exception");
+				logger.error("creat : catch SQL Exception");
 				e.printStackTrace();
 			}
-			return listReturn ;
 		}
+		return listReturn ;
 	}
 	
-	@Override
 	public int update(Computer c) {
-		logger = LogConfigurator.configureLoggerIfNull(logger,ComputerDAOImpl.class.getName());
+		//logger = LogConfigurator.configureLoggerIfNull(logger,ComputerDAOImpl.class.getName());
 		String query ="UPDATE computer SET name = ? , introduced =?,discontinued=?,company_id=?  WHERE id = ?";
+		JDBCConnection jdbcConnection = new JDBCConnection();
 		Connection conn = jdbcConnection.open();
 		int results =0;
 		
@@ -152,10 +151,10 @@ public class ComputerDAOImpl implements ComputerDAO{
 		return results ;
 	}
 
-	@Override
 	public int delete(Long id) {
-		logger = LogConfigurator.configureLoggerIfNull(logger,ComputerDAOImpl.class.getName());
+		//logger = LogConfigurator.configureLoggerIfNull(logger,ComputerDAOImpl.class.getName());
 		String query ="DELETE FROM computer WHERE id = ?";
+		JDBCConnection jdbcConnection = new JDBCConnection();
 		Connection conn = jdbcConnection.open();
 		int results =0;
 		

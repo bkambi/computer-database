@@ -21,15 +21,16 @@ public class JDBCConnection {
 	/**
 	 *  Connection Object
 	 */
-	private static Connection connect;
+	private  Connection connect = null;
 
 	/**
 	 * Private constructor 
 	 */
 	public JDBCConnection() {
 		try {
+			Class.forName("com.mysql.jdbc.Driver");
 			connect = DriverManager.getConnection(url, user, passwd);
-		} catch (SQLException e) {
+		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
