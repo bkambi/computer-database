@@ -48,9 +48,20 @@ public class ComputerServices {
 	/**
 	 * Add a Computer in the data base using the method of the DAO
 	 */
-	public static void addComputerService() {
-
-	}
+	/*private static void handleRequestForAddComputer(HttpServletRequest request) {
+	String computerName =(String) request.getAttribute("computerName");
+	String introduced =(String) request.getAttribute("computerName");
+	String discontinued =(String) request.getAttribute("discontinued");
+	String companyId = (String)request.getAttribute("companyId");
+	
+	Computer computer = new Computer();
+	computer.setName(computerName);
+	computer.setIntroduced(introduced);
+	computer.setDiscontinued(discontinued);
+	computer.setId(companyId);
+	
+	dao.creat(computer);
+}*/
 
 	public static List<String> getListIndice() {
 		List<String> listIndiceRetour = new ArrayList<String>();
@@ -78,6 +89,8 @@ public class ComputerServices {
 		HttpSession session = req.getSession();
 		String indiceString = (String) req.getParameter("indice");
 		String numberOfComputerString = (String) req.getParameter("numberOfComputer");
+		String arrayIndice = (String) req.getParameter("arrayIndice");
+
 		int indice = 0;
 		int numberOfComputer = 10;
 
@@ -89,12 +102,24 @@ public class ComputerServices {
 			pageDashboard.updateListComputerWithNewNumberOfComputer(numberOfComputer);
 			session.setAttribute("pageDashboard", pageDashboard);
 		} else {
-			try {
-				indice = indiceString != null ? Integer.parseInt(indiceString) : pageDashboard.getIndice();
+			int maxRang = pageDashboard.getListeCompany().size() / pageDashboard.getNumberOfComputer();
+			int minRang = 0;
+			if ("next".equals(arrayIndice)) {
+				indice = pageDashboard.getIndice() + 1 < maxRang ? pageDashboard.getIndice() + 1 : maxRang;
 				numberOfComputer = numberOfComputerString != null ? Integer.parseInt(numberOfComputerString)
 						: pageDashboard.getNumberOfComputer();
-			} catch (NumberFormatException e) {
-				e.printStackTrace();
+			} else if ("previous".equals(arrayIndice)) {
+				indice = pageDashboard.getIndice() - 1 >= minRang ? pageDashboard.getIndice() - 1 : minRang;
+				numberOfComputer = numberOfComputerString != null ? Integer.parseInt(numberOfComputerString)
+						: pageDashboard.getNumberOfComputer();
+			} else {
+				try {
+					indice = indiceString != null ? Integer.parseInt(indiceString) : pageDashboard.getIndice();
+					numberOfComputer = numberOfComputerString != null ? Integer.parseInt(numberOfComputerString)
+							: pageDashboard.getNumberOfComputer();
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+				}
 			}
 			Page pageDashboardSession = (Page) session.getAttribute("pageDashboard");
 			pageDashboardSession.setListeComputer(daoComputer.getList());
