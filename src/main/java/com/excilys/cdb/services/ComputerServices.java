@@ -29,11 +29,10 @@ public class ComputerServices {
 	 * 
 	 * @return ComputerDTO , DTO useful for the view
 	 */
-	public static List<ComputerDTO> getListComputerToShowService(
-			HttpServletRequest req) {
-		
+	public static List<ComputerDTO> getListComputerToShowService(HttpServletRequest req) {
+
 		pageDashboardInit(req);
-		
+
 		List<ComputerDTO> listComputerDTO = new ArrayList<ComputerDTO>();
 
 		for (Computer computer : pageDashboard.getListeComputerToShow()) {
@@ -52,23 +51,36 @@ public class ComputerServices {
 	public static void addComputerService() {
 
 	}
-	
+
 	public static List<String> getListIndice() {
 		List<String> listIndiceRetour = new ArrayList<String>();
 		int max = pageDashboard.getListeComputer().size() / pageDashboard.getNumberOfComputer();
-		for (int i = pageDashboard.getIndice(); i < max; i++) {
-			listIndiceRetour.add(String.valueOf(i));
+
+		if (pageDashboard.getIndice() - 1 >= 0 & pageDashboard.getIndice() + 1 <= max) {
+			listIndiceRetour.add(String.valueOf(pageDashboard.getIndice() - 1));
+			listIndiceRetour.add(String.valueOf(pageDashboard.getIndice()));
+			listIndiceRetour.add(String.valueOf(pageDashboard.getIndice() + 1));
+		} else if (pageDashboard.getIndice() - 1 < 0 & pageDashboard.getIndice() + 1 <= max) {
+			listIndiceRetour.add(String.valueOf(pageDashboard.getIndice()));
+			listIndiceRetour.add(String.valueOf(pageDashboard.getIndice() + 1));
+		} else if (pageDashboard.getIndice() - 1 >= 0 & pageDashboard.getIndice() + 1 > max) {
+			listIndiceRetour.add(String.valueOf(pageDashboard.getIndice() - 1));
+			listIndiceRetour.add(String.valueOf(pageDashboard.getIndice()));;
+		} else {
+			listIndiceRetour.add("0");
+			listIndiceRetour.add("1");
+			listIndiceRetour.add("2");
 		}
-		return listIndiceRetour ;
-	} 
+		return listIndiceRetour;
+	}
 
 	public static void pageDashboardInit(HttpServletRequest req) {
 		HttpSession session = req.getSession();
-		String indiceString = (String)req.getParameter("indice");
+		String indiceString = (String) req.getParameter("indice");
 		String numberOfComputerString = (String) req.getParameter("numberOfComputer");
 		int indice = 0;
-		int numberOfComputer=10; 
-		
+		int numberOfComputer = 10;
+
 		if (session.getAttribute("pageDashboard") == null) {
 			pageDashboard = new Page();
 			pageDashboard.setListeComputer(daoComputer.getList());
@@ -79,19 +91,22 @@ public class ComputerServices {
 		} else {
 			try {
 				indice = indiceString != null ? Integer.parseInt(indiceString) : pageDashboard.getIndice();
-				numberOfComputer = numberOfComputerString != null ? Integer.parseInt(numberOfComputerString):pageDashboard.getNumberOfComputer();
-			}catch(NumberFormatException e) {
+				numberOfComputer = numberOfComputerString != null ? Integer.parseInt(numberOfComputerString)
+						: pageDashboard.getNumberOfComputer();
+			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			}
 			Page pageDashboardSession = (Page) session.getAttribute("pageDashboard");
 			pageDashboardSession.setListeComputer(daoComputer.getList());
 			pageDashboardSession.setListeCompany(daoCompany.getList());
-			pageDashboardSession.setIndice(indice);
+			if( numberOfComputerString != null ) {
+				pageDashboardSession.setIndice(0);
+			}else if(indiceString != null ) {
+				pageDashboardSession.setIndice(indice);
+			}
 			pageDashboardSession.updateListComputerWithNewNumberOfComputer(numberOfComputer);
 			session.setAttribute("pageDashboard", pageDashboardSession);
 		}
-		
-		
 
 	}
 }
