@@ -16,6 +16,7 @@ import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Page;
+import com.excilys.cdb.util.Parser;
 
 public class ComputerServices {
 
@@ -48,20 +49,23 @@ public class ComputerServices {
 	/**
 	 * Add a Computer in the data base using the method of the DAO
 	 */
-	/*private static void handleRequestForAddComputer(HttpServletRequest request) {
-	String computerName =(String) request.getAttribute("computerName");
-	String introduced =(String) request.getAttribute("computerName");
-	String discontinued =(String) request.getAttribute("discontinued");
-	String companyId = (String)request.getAttribute("companyId");
-	
-	Computer computer = new Computer();
-	computer.setName(computerName);
-	computer.setIntroduced(introduced);
-	computer.setDiscontinued(discontinued);
-	computer.setId(companyId);
-	
-	dao.creat(computer);
-}*/
+
+	private static void handleRequestForAddComputer(HttpServletRequest request) {
+		String computerName = (String) request.getAttribute("computerName");
+		String introduced = (String) request.getAttribute("computerName");
+		String discontinued = (String) request.getAttribute("discontinued");
+		String companyId = (String) request.getAttribute("companyId");
+
+		Computer computer = new Computer();
+		computer.setName(computerName);
+		computer.setIntroduced(Parser.stringToTimestamp(introduced).get());
+		computer.setDiscontinued(Parser.stringToTimestamp(discontinued).get());
+		if (!"-1".equals(companyId)) {
+			computer.setId(Long.parseLong(companyId));
+		}
+
+		daoComputer.creat(computer);
+	}
 
 	public static List<String> getListIndice() {
 		List<String> listIndiceRetour = new ArrayList<String>();
@@ -76,7 +80,8 @@ public class ComputerServices {
 			listIndiceRetour.add(String.valueOf(pageDashboard.getIndice() + 1));
 		} else if (pageDashboard.getIndice() - 1 >= 0 & pageDashboard.getIndice() + 1 > max) {
 			listIndiceRetour.add(String.valueOf(pageDashboard.getIndice() - 1));
-			listIndiceRetour.add(String.valueOf(pageDashboard.getIndice()));;
+			listIndiceRetour.add(String.valueOf(pageDashboard.getIndice()));
+			;
 		} else {
 			listIndiceRetour.add("0");
 			listIndiceRetour.add("1");
@@ -102,31 +107,30 @@ public class ComputerServices {
 			pageDashboard.updateListComputerWithNewNumberOfComputer(numberOfComputer);
 			session.setAttribute("pageDashboard", pageDashboard);
 		} else {
-			int maxRang = pageDashboard.getListeCompany().size() / pageDashboard.getNumberOfComputer();
-			int minRang = 0;
-			if ("next".equals(arrayIndice)) {
-				indice = pageDashboard.getIndice() + 1 < maxRang ? pageDashboard.getIndice() + 1 : maxRang;
-				numberOfComputer = numberOfComputerString != null ? Integer.parseInt(numberOfComputerString)
-						: pageDashboard.getNumberOfComputer();
-			} else if ("previous".equals(arrayIndice)) {
-				indice = pageDashboard.getIndice() - 1 >= minRang ? pageDashboard.getIndice() - 1 : minRang;
-				numberOfComputer = numberOfComputerString != null ? Integer.parseInt(numberOfComputerString)
-						: pageDashboard.getNumberOfComputer();
-			} else {
-				try {
+			try {
+				int maxRang = pageDashboard.getListeComputer().size() / pageDashboard.getNumberOfComputer();
+				int minRang = 0;
+				if ("next".equals(arrayIndice)) {
+					indice = maxRang;
+				} else if ("previous".equals(arrayIndice)) {
+					indice = minRang;
+				} else {
 					indice = indiceString != null ? Integer.parseInt(indiceString) : pageDashboard.getIndice();
-					numberOfComputer = numberOfComputerString != null ? Integer.parseInt(numberOfComputerString)
-							: pageDashboard.getNumberOfComputer();
-				} catch (NumberFormatException e) {
-					e.printStackTrace();
 				}
+				numberOfComputer = numberOfComputerString != null ? Integer.parseInt(numberOfComputerString)
+						: pageDashboard.getNumberOfComputer();
+				System.out.println("indice : " + indice + "numberOfComputer :" + numberOfComputer);
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
 			}
 			Page pageDashboardSession = (Page) session.getAttribute("pageDashboard");
 			pageDashboardSession.setListeComputer(daoComputer.getList());
 			pageDashboardSession.setListeCompany(daoCompany.getList());
-			if( numberOfComputerString != null ) {
+			if (numberOfComputerString != null) {
 				pageDashboardSession.setIndice(0);
-			}else if(indiceString != null ) {
+			} else if (indiceString != null) {
+				pageDashboardSession.setIndice(indice);
+			} else if (arrayIndice != null) {
 				pageDashboardSession.setIndice(indice);
 			}
 			pageDashboardSession.updateListComputerWithNewNumberOfComputer(numberOfComputer);

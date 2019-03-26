@@ -91,13 +91,13 @@
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
 			<ul class="pagination">
-				<li><a href="#" aria-label="Previous"> <span
+				<li><a href="?arrayIndice=previous" aria-label="Previous"> <span
 						aria-hidden="true">&laquo;</span>
 				</a></li>
 				<c:forEach items="${listIndice}" var="indice">
 				<li><a href="?indice=${indice}">${indice}</a></li>
 				</c:forEach>
-				<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+				<li><a href="?arrayIndice=next" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 				</a></li>
 			</ul>
 
