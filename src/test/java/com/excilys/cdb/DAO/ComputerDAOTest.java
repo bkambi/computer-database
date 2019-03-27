@@ -5,16 +5,16 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.excilys.cdb.DAOImpl.ComputerDAOImpl;
+import com.excilys.cdb.DAO.ComputerDAO;
 import com.excilys.cdb.model.Computer;
 
 public class ComputerDAOTest  {
-	private static ComputerDAOImpl dao ;
+	private static ComputerDAO dao ;
 	
 	
 	@BeforeClass
     public static void init() {
-        dao = new ComputerDAOImpl();
+        dao = new ComputerDAO();
     }
 	@Before
 	public void setUp() {

@@ -1,34 +1,40 @@
-package com.excilys.cdb.controller;
+package com.excilys.cdb.controllerWeb;
 
 import java.io.IOException;
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.excilys.cdb.DAOImpl.ComputerDAOImpl;
-import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.services.ComputerServices;
 
 /**
- * Servlet implementation class ComputerServlet
+ * Servlet implementation class ComputerAddServlet
  */
-@WebServlet("/add-computer")
-public class ComputerServlet extends HttpServlet {
+@WebServlet("/new-computer")
+public class ComputerAddServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-     ComputerDAOImpl dao = new ComputerDAOImpl();  
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ComputerServlet() {
+    public ComputerAddServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
+
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//ComputerServices.handleRequestForAddComputer(request);
 	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		ComputerServices.handleRequestForAddComputer(request,response);
+	}
+
 }

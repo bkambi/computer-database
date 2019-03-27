@@ -1,4 +1,4 @@
-package com.excilys.cdb.controller;
+package com.excilys.cdb.controllerWeb;
 
 import java.io.IOException;
 import java.util.List;

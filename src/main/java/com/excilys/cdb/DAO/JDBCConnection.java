@@ -1,4 +1,4 @@
-package com.excilys.cdb.DAOImpl;
+package com.excilys.cdb.DAO;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

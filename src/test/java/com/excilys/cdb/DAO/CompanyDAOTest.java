@@ -7,16 +7,16 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.excilys.cdb.DAOImpl.CompanyDAOImpl;
+import com.excilys.cdb.DAO.CompanyDAO;
 import com.excilys.cdb.model.Company;
 
 public class CompanyDAOTest {
-private static CompanyDAOImpl dao ;
+private static CompanyDAO dao ;
 private Company c ;	
 	
 	@BeforeClass
     public static void init() {
-        dao = new CompanyDAOImpl();
+        dao = new CompanyDAO();
     }
 	
 	@Before

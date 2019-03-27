@@ -4,11 +4,8 @@ import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 
-import com.excilys.cdb.DAO.ComputerDAO;
-import com.excilys.cdb.DAOImpl.ComputerDAOImpl;
-import com.excilys.cdb.controller.CompanyController;
-import com.excilys.cdb.controller.ComputerController;
-import com.excilys.cdb.model.LogConfigurator;
+import com.excilys.cdb.controllerCli.CompanyController;
+import com.excilys.cdb.controllerCli.ComputerController;
 import com.excilys.cdb.model.Page;
 import com.excilys.cdb.util.enume.Choix;
 import com.excilys.cdb.util.enume.Instruction;
@@ -18,8 +15,6 @@ public class View {
 	private static Logger logger;
 
 	public static void main(String[] args) {
-
-		LogConfigurator.addProperties();
 
 		logger = Logger.getLogger(View.class.getName());
 

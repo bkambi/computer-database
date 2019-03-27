@@ -1,4 +1,4 @@
-package com.excilys.cdb.controller;
+package com.excilys.cdb.controllerCli;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -10,14 +10,13 @@ import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 
-import com.excilys.cdb.DAOImpl.ComputerDAOImpl;
+import com.excilys.cdb.DAO.ComputerDAO;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.model.LogConfigurator;
 import com.excilys.cdb.model.Page;
 
 public class ComputerController {
 
-	private Logger logger;
+	private Logger logger = Logger.getLogger(ComputerController.class);
 	private String stringRetour;
 	private Page pageDashboard = new Page();
 
@@ -27,9 +26,9 @@ public class ComputerController {
 	 * @return String list of all Computer
 	 */
 	public void setListComputer() {
-		logger = LogConfigurator.configureLoggerIfNull(logger, ComputerController.class.getName());
+		
 		stringRetour = "";
-		ComputerDAOImpl daoComputer = new ComputerDAOImpl();
+		ComputerDAO daoComputer = new ComputerDAO();
 		pageDashboard.setListeComputer(daoComputer.getList());
 		/*
 		 * for (Computer c : listeComputer) { stringRetour += c.toString() + "\n"; }
@@ -43,7 +42,6 @@ public class ComputerController {
 	 * @return String list of all Computer
 	 */
 	public String returnListComputer(List<Computer> listeComputer) {
-		logger = LogConfigurator.configureLoggerIfNull(logger, ComputerController.class.getName());
 		stringRetour = "";
 		for (Computer c : listeComputer) {
 			stringRetour += c.toString() + "\n";
@@ -57,10 +55,9 @@ public class ComputerController {
 	 * @return String details of a specific computer
 	 */
 	public String showDetailsOfThisComputer() {
-		logger = LogConfigurator.configureLoggerIfNull(logger, ComputerController.class.getName());
 		stringRetour = "";
 		String secondeEnter = "";
-		ComputerDAOImpl daoComputer = new ComputerDAOImpl();
+		ComputerDAO daoComputer = new ComputerDAO();
 		secondeEnter = lireEntrerClavier();
 		if (!secondeEnter.equals("q")) {
 			try {
@@ -80,8 +77,7 @@ public class ComputerController {
 	 * Create a computer and add it to the database
 	 */
 	public void addComputerToDatabase() {
-		logger = LogConfigurator.configureLoggerIfNull(logger, ComputerController.class.getName());
-		ComputerDAOImpl daoComputer = new ComputerDAOImpl();
+		ComputerDAO daoComputer = new ComputerDAO();
 		Computer c = new Computer();
 		String thirdEnter = "";
 		thirdEnter = lireEntrerClavier();
@@ -118,8 +114,7 @@ public class ComputerController {
 	 * Update a computer in the database
 	 */
 	public void updateComputerInDatabase() {
-		logger = LogConfigurator.configureLoggerIfNull(logger, ComputerController.class.getName());
-		ComputerDAOImpl daoComputer = new ComputerDAOImpl();
+		ComputerDAO daoComputer = new ComputerDAO();
 		Computer c = new Computer();
 		String thirdEnter = "";
 		thirdEnter = lireEntrerClavier();
@@ -158,10 +153,9 @@ public class ComputerController {
 	 * @return String , information of the method
 	 */
 	public String deleteComputerInDatabase() {
-		logger = LogConfigurator.configureLoggerIfNull(logger, ComputerController.class.getName());
 		stringRetour = "";
 		String forthEnter = "";
-		ComputerDAOImpl daoComputer = new ComputerDAOImpl();
+		ComputerDAO daoComputer = new ComputerDAO();
 		forthEnter = lireEntrerClavier();
 		if (!forthEnter.equals("q")) {
 			try {
@@ -185,7 +179,6 @@ public class ComputerController {
 	 * @return
 	 */
 	public Timestamp castStringToTimestamp(String dateString) {
-		logger = LogConfigurator.configureLoggerIfNull(logger, ComputerController.class.getName());
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		Date date = null;
 		try {
@@ -211,7 +204,7 @@ public class ComputerController {
 
 	public void showListeComputer() {
 
-		ComputerDAOImpl daoComputer = new ComputerDAOImpl();
+		ComputerDAO daoComputer = new ComputerDAO();
 		pageDashboard.setListeComputer(daoComputer.getList());
 		pageDashboard.setIndice(0);
 		pageDashboard.updateListComputerWithNewNumberOfComputer(100);

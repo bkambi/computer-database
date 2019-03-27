@@ -26,11 +26,4 @@ public class ComputerMapper {
 
 	}
 
-//	public static Computer map(ComputerDTO computerDTO) {
-//		Timestamp introduced = new Timestamp((new Date(computerDTO.getIntroduced()).getTime()));
-//		Computer c  = new Computer();
-//		c.setName(computerDTO.getName(););
-//		c.setIntroduced(new TimestampcomputerDTO.getIntroduced());
-//		return null;}
-
 }

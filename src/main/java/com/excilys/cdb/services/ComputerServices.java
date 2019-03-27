@@ -6,11 +6,15 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.ParseException;
 import java.util.ArrayList;
 
-import com.excilys.cdb.DAOImpl.CompanyDAOImpl;
-import com.excilys.cdb.DAOImpl.ComputerDAOImpl;
+import com.excilys.cdb.DAO.CompanyDAO;
+import com.excilys.cdb.DAO.ComputerDAO;
 import com.excilys.cdb.DTO.ComputerDTO;
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Company;
@@ -20,8 +24,8 @@ import com.excilys.cdb.util.Parser;
 
 public class ComputerServices {
 
-	private static ComputerDAOImpl daoComputer = new ComputerDAOImpl();
-	private static CompanyDAOImpl daoCompany = new CompanyDAOImpl();
+	private static ComputerDAO daoComputer = new ComputerDAO();
+	private static CompanyDAO daoCompany = new CompanyDAO();
 	private static Page pageDashboard;
 
 	/**
@@ -50,23 +54,57 @@ public class ComputerServices {
 	 * Add a Computer in the data base using the method of the DAO
 	 */
 
-	private static void handleRequestForAddComputer(HttpServletRequest request) {
-		String computerName = (String) request.getAttribute("computerName");
-		String introduced = (String) request.getAttribute("computerName");
-		String discontinued = (String) request.getAttribute("discontinued");
-		String companyId = (String) request.getAttribute("companyId");
+	public static void handleRequestForAddComputer(HttpServletRequest request, HttpServletResponse response) {
+
+		String computerName = request.getParameter("computerName");
+		String introduced = request.getParameter("introduced");
+		String discontinued = request.getParameter("discontinued");
+		String companyId = request.getParameter("companyId");
+		System.out.println("computer name : " + computerName + "introduced : " + introduced + "discontinued : "
+				+ discontinued + "companyId : " + companyId);
+		JSONObject jsonObject = new JSONObject();
 
 		Computer computer = new Computer();
+
 		computer.setName(computerName);
 		computer.setIntroduced(Parser.stringToTimestamp(introduced).get());
 		computer.setDiscontinued(Parser.stringToTimestamp(discontinued).get());
-		if (!"-1".equals(companyId)) {
-			computer.setId(Long.parseLong(companyId));
-		}
+		Long companyID = null;
 
-		daoComputer.creat(computer);
+		try {
+			companyID = Long.parseLong(companyId);
+			computer.setCompany_id(companyID);
+			if (isValidatedByTheBack(computer)) {
+				daoComputer.creat(computer);
+			}
+			;
+		} catch (NumberFormatException numberFormatException) {
+			numberFormatException.printStackTrace();
+		}
 	}
 
+	/**
+	 * Check if the computer have a correct information
+	 * 
+	 * @param computer
+	 * @return boolean , true if is validate , false if is not
+	 */
+	public static boolean isValidatedByTheBack(Computer computer) {
+		boolean results = false;
+		if (computer.getIntroduced().before(computer.getDiscontinued())) {
+			Optional<Company> optionalCompany = daoCompany.getById(computer.getCompany_id());
+			if (optionalCompany.isPresent()) {
+				results = true;
+			}
+		}
+		return results;
+	}
+
+	/**
+	 * Get the Liste of the indice for the pagination
+	 * 
+	 * @return
+	 */
 	public static List<String> getListIndice() {
 		List<String> listIndiceRetour = new ArrayList<String>();
 		int max = pageDashboard.getListeComputer().size() / pageDashboard.getNumberOfComputer();
@@ -90,6 +128,12 @@ public class ComputerServices {
 		return listIndiceRetour;
 	}
 
+	
+	/**
+	 * Instance the Dashboard page for the dashboard.jsp
+	 * 
+	 * @param req
+	 */
 	public static void pageDashboardInit(HttpServletRequest req) {
 		HttpSession session = req.getSession();
 		String indiceString = (String) req.getParameter("indice");
