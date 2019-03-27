@@ -60,9 +60,6 @@ public class ComputerServices {
 		String introduced = request.getParameter("introduced");
 		String discontinued = request.getParameter("discontinued");
 		String companyId = request.getParameter("companyId");
-		System.out.println("computer name : " + computerName + "introduced : " + introduced + "discontinued : "
-				+ discontinued + "companyId : " + companyId);
-		JSONObject jsonObject = new JSONObject();
 
 		Computer computer = new Computer();
 
@@ -76,6 +73,8 @@ public class ComputerServices {
 			computer.setCompany_id(companyID);
 			if (isValidatedByTheBack(computer)) {
 				daoComputer.creat(computer);
+			}else {
+				//TODO throw new exception InvalidDataException 
 			}
 			;
 		} catch (NumberFormatException numberFormatException) {
@@ -106,29 +105,25 @@ public class ComputerServices {
 	 * @return
 	 */
 	public static List<String> getListIndice() {
-		List<String> listIndiceRetour = new ArrayList<String>();
-		int max = pageDashboard.getListeComputer().size() / pageDashboard.getNumberOfComputer();
 
-		if (pageDashboard.getIndice() - 1 >= 0 & pageDashboard.getIndice() + 1 <= max) {
-			listIndiceRetour.add(String.valueOf(pageDashboard.getIndice() - 1));
-			listIndiceRetour.add(String.valueOf(pageDashboard.getIndice()));
-			listIndiceRetour.add(String.valueOf(pageDashboard.getIndice() + 1));
-		} else if (pageDashboard.getIndice() - 1 < 0 & pageDashboard.getIndice() + 1 <= max) {
-			listIndiceRetour.add(String.valueOf(pageDashboard.getIndice()));
-			listIndiceRetour.add(String.valueOf(pageDashboard.getIndice() + 1));
+		List<String> listIndiceRetour = new ArrayList<String>();
+
+		int max = pageDashboard.getListeComputer().size() / pageDashboard.getNumberOfComputer();
+		int indice = pageDashboard.getIndice();
+
+		if (indice - 1 >= 0 & indice + 1 <= max) {
+			listIndiceRetour = new ArrayList<>(
+					List.of(String.valueOf(indice - 1), String.valueOf(indice), String.valueOf(indice + 1)));
+		} else if (indice - 1 < 0 & indice + 1 <= max) {
+			listIndiceRetour = new ArrayList<>(List.of(String.valueOf(indice), String.valueOf(indice + 1)));
 		} else if (pageDashboard.getIndice() - 1 >= 0 & pageDashboard.getIndice() + 1 > max) {
-			listIndiceRetour.add(String.valueOf(pageDashboard.getIndice() - 1));
-			listIndiceRetour.add(String.valueOf(pageDashboard.getIndice()));
-			;
+			listIndiceRetour = new ArrayList<>(List.of(String.valueOf(indice - 1), String.valueOf(indice)));
 		} else {
-			listIndiceRetour.add("0");
-			listIndiceRetour.add("1");
-			listIndiceRetour.add("2");
+			listIndiceRetour = new ArrayList<>(List.of("0", "1", "2"));
 		}
 		return listIndiceRetour;
 	}
 
-	
 	/**
 	 * Instance the Dashboard page for the dashboard.jsp
 	 * 
@@ -163,7 +158,6 @@ public class ComputerServices {
 				}
 				numberOfComputer = numberOfComputerString != null ? Integer.parseInt(numberOfComputerString)
 						: pageDashboard.getNumberOfComputer();
-				System.out.println("indice : " + indice + "numberOfComputer :" + numberOfComputer);
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			}

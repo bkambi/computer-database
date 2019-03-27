@@ -5,8 +5,7 @@ $(document)
 			.click(
 					function(event) {
 
-						var computerName = $("#computerName")
-						.val();
+						var computerName = $("#computerName").val();
 						var intro = $("#introduced").val();
 						var disco = $("#discontinued").val();
 						var companyName = $('#companyId').val();
