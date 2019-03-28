@@ -34,7 +34,7 @@ public class AddServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
 		request.setAttribute("listeCompany", dao.getList());
-		RequestDispatcher rd = getServletContext().getRequestDispatcher("/WEB-INF/views/ addComputer.jsp");
+		RequestDispatcher rd = getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp");
 		rd.forward(request, response);
 	}
 }

@@ -29,7 +29,7 @@ public class HikaricpConnection {
 			logger.error("Class Not Found Exception");
 			e.printStackTrace();
 		}
-    	config.setJdbcUrl("jdbc:mysql://localhost:3306/computer-database-db");
+    	config.setJdbcUrl("jdbc:mysql://localhost:3306/computer-database-db?useSSL=false");
 		config.setUsername("admincdb");
 		config.setPassword("qwerty1234");
 		config.addDataSourceProperty("cachePrepStmts", "true");

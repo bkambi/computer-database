@@ -37,8 +37,10 @@ public class HomeServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		List<ComputerDTO> listeComputerDto = ComputerServices.getListComputerToShowService(request);
 		List<String> listIndice = ComputerServices.getListIndice();
+		String totalComputer = ComputerServices.getTotalComputer();
 		request.setAttribute("listeComputer", listeComputerDto);
 		request.setAttribute("listIndice",listIndice);
+		request.setAttribute("totalCount", totalComputer);
 		RequestDispatcher rd = getServletContext().getRequestDispatcher("/WEB-INF/views/dashboard.jsp");
 		rd.forward(request, response);
 	}

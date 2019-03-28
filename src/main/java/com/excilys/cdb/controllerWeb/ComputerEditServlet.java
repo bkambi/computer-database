@@ -11,37 +11,24 @@ import com.excilys.cdb.exception.InvalidDataComputerException;
 import com.excilys.cdb.services.ComputerServices;
 
 /**
- * Servlet implementation class ComputerAddServlet
+ * Servlet implementation class ComputerEditServlet
  */
-@WebServlet("/new-computer")
-public class ComputerAddServlet extends HttpServlet {
+@WebServlet("/editComputer")
+public class ComputerEditServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ComputerAddServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	}
-
+ 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			ComputerServices.handleRequestForAddComputer(request,response);
+			ComputerServices.handleRequestForUpdateComputer(request, response);
 			response.sendRedirect("/dashboard");
 		} catch (InvalidDataComputerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			response.sendRedirect("/add-computer");
+			response.sendRedirect("/edit-computer");
 		}
 	}
 
