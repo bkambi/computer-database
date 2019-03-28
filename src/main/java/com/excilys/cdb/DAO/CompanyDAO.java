@@ -28,11 +28,9 @@ public class CompanyDAO {
 	 */
 	public int creat(Company c) {
 
-		JDBCConnection jdbcConnection = new JDBCConnection();
-		Connection conn = jdbcConnection.open();
 		int results = 0;
 
-		try {
+		try (Connection conn = HikaricpConnection.getInstance().open()){
 			PreparedStatement ps = conn.prepareStatement(INSERT_COMPANY);
 			ps.setString(1, c.getName());
 			results = ps.executeUpdate();
@@ -40,15 +38,7 @@ public class CompanyDAO {
 
 			logger.error("creat : catch SQL Exception");
 			e.printStackTrace();
-		} finally {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-
-				logger.error("creat : catch SQL Exception");
-				e.printStackTrace();
-			}
-		}
+		} 
 
 		return results;
 	}
@@ -63,9 +53,7 @@ public class CompanyDAO {
 	public Optional<Company> getById(Long id) {
 
 		Company companyReturn = null;
-		JDBCConnection jdbcConnection = new JDBCConnection();
-
-		try (Connection conn = jdbcConnection.open()) {
+		try (Connection conn = HikaricpConnection.getInstance().open()){
 
 			PreparedStatement ps = conn.prepareStatement(SELECT_A_COMPANY);
 			if (id != null) {
@@ -88,15 +76,16 @@ public class CompanyDAO {
 	 * This method takes all Company on the database
 	 * 
 	 * @return List<Company> The list of all Company
+	 * @throws SQLException 
 	 */
 	@SuppressWarnings("finally")
 	public List<Company> getList() {
 
 		List<Company> listReturn = new ArrayList<Company>();
-		JDBCConnection jdbcConnection = new JDBCConnection();
-		Connection conn = jdbcConnection.open();
+		//Connection conn = null;
 
-		try {
+		try (Connection conn = HikaricpConnection.getInstance().open()){
+			
 			PreparedStatement ps = conn.prepareStatement(SELECT_COMPANIES);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
@@ -107,14 +96,8 @@ public class CompanyDAO {
 
 			logger.error("getList : SQL Exception");
 			e.printStackTrace();
-		} finally {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			return listReturn;
-		}
+		} 
+		return listReturn;
 	}
 
 	/**
@@ -122,14 +105,13 @@ public class CompanyDAO {
 	 * 
 	 * @return either (1) the row count for SQL Data Manipulation Language (DML)
 	 *         statements or (2) 0 for SQL statements that return nothing
+	 * @throws SQLException 
 	 */
-	public int delete(Long id) {
+	public int delete(Long id) throws SQLException {
 
-		JDBCConnection jdbcConnection = new JDBCConnection();
-		Connection conn = jdbcConnection.open();
+		
 		int results = 0;
-
-		try {
+		try (Connection conn = HikaricpConnection.getInstance().open()){
 			PreparedStatement ps = conn.prepareStatement(DELETE_COMPANY);
 			ps.setLong(1, id);
 			results = ps.executeUpdate();
@@ -137,14 +119,7 @@ public class CompanyDAO {
 
 			logger.error("delete : catch SQL Exception");
 			e.printStackTrace();
-		} finally {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				logger.error("delete : finally catch SQL Exception");
-				e.printStackTrace();
-			}
-		}
+		} 
 
 		return results;
 	}

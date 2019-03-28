@@ -30,11 +30,8 @@ public class ComputerDAO {
 	 *         statements or (2) 0 for SQL statements that return nothing
 	 */
 	public int creat(Computer c) {
-		JDBCConnection jdbcConnection = new JDBCConnection();
-		Connection conn = jdbcConnection.open();
 		int results = 0;
-
-		try {
+		try (Connection conn = HikaricpConnection.getInstance().open()){
 			PreparedStatement ps = conn.prepareStatement(INSERT_COMPUTER);
 			ps.setString(1, c.getName());
 			ps.setTimestamp(2, c.getIntroduced());
@@ -44,15 +41,7 @@ public class ComputerDAO {
 		} catch (SQLException e) {
 			logger.error("creat : catch SQL Exception");
 			e.printStackTrace();
-		} finally {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				logger.error("creat : finally catch SQL Exception");
-				e.printStackTrace();
-			}
-
-		}
+		} 
 		return results;
 
 	}
@@ -66,10 +55,7 @@ public class ComputerDAO {
 	 */
 	public Computer getById(Long id) {
 
-		JDBCConnection jdbcConnection = new JDBCConnection();
-		Connection conn = jdbcConnection.open();
-
-		try {
+		try (Connection conn = HikaricpConnection.getInstance().open()){
 			PreparedStatement ps = conn.prepareStatement(SELECT_A_COMPUTER);
 			ps.setLong(1, id);
 			ResultSet rs = ps.executeQuery();
@@ -87,15 +73,7 @@ public class ComputerDAO {
 			logger.error("getById : SQL Exception");
 			e.printStackTrace();
 			return new Computer();
-		} finally {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		}
+		} 
 
 	}
 
@@ -107,10 +85,7 @@ public class ComputerDAO {
 	public List<Computer> getList() {
 
 		List<Computer> listReturn = new ArrayList<Computer>();
-		JDBCConnection jdbcConnection = new JDBCConnection();
-		Connection conn = jdbcConnection.open();
-
-		try {
+		try (Connection conn = HikaricpConnection.getInstance().open()){
 			PreparedStatement ps = conn.prepareStatement(SELECT_COMPUTERS);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
@@ -122,14 +97,6 @@ public class ComputerDAO {
 
 			logger.error("getList : SQL Exception");
 			e.printStackTrace();
-		} finally {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-
-				logger.error("creat : catch SQL Exception");
-				e.printStackTrace();
-			}
 		}
 		return listReturn;
 	}
@@ -141,12 +108,9 @@ public class ComputerDAO {
 	 *         statements or (2) 0 for SQL statements that return nothing
 	 */
 	public int update(Computer c) {
-
-		JDBCConnection jdbcConnection = new JDBCConnection();
-		Connection conn = jdbcConnection.open();
 		int results = 0;
 
-		try {
+		try (Connection conn = HikaricpConnection.getInstance().open()){
 			PreparedStatement ps = conn.prepareStatement(UPDATE_COMPUTER);
 			ps.setString(1, c.getName());
 			ps.setTimestamp(2, c.getIntroduced());
@@ -158,15 +122,7 @@ public class ComputerDAO {
 
 			logger.error("update : catch SQL Exception");
 			e.printStackTrace();
-		} finally {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				logger.error("update : finally catch SQL Exception");
-				e.printStackTrace();
-			}
-		}
-
+		} 
 		return results;
 	}
 
@@ -178,11 +134,8 @@ public class ComputerDAO {
 	 */
 	public int delete(Long id) {
 
-		JDBCConnection jdbcConnection = new JDBCConnection();
-		Connection conn = jdbcConnection.open();
 		int results = 0;
-
-		try {
+		try (Connection conn = HikaricpConnection.getInstance().open()){
 			PreparedStatement ps = conn.prepareStatement(DELETE_COMPUTER);
 			ps.setLong(1, id);
 			results = ps.executeUpdate();
@@ -190,13 +143,6 @@ public class ComputerDAO {
 
 			logger.error("delete : catch SQL Exception");
 			e.printStackTrace();
-		} finally {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				logger.error("delete : finally catch SQL Exception");
-				e.printStackTrace();
-			}
 		}
 
 		return results;
