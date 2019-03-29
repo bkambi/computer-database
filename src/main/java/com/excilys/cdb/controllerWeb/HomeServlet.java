@@ -38,6 +38,13 @@ public class HomeServlet extends HttpServlet {
 		List<ComputerDTO> listeComputerDto = ComputerServices.getListComputerToShowService(request);
 		List<String> listIndice = ComputerServices.getListIndice();
 		String totalComputer = ComputerServices.getTotalComputer();
+		
+		if(request.getParameter("search")!= null )
+			listeComputerDto = ComputerServices.getFilterListComputer(request, listeComputerDto);
+		else if(request.getParameter("orderBy")!=null && request.getParameter("reversed")!=null)
+			listeComputerDto = ComputerServices.getOrderListComputer(request, listeComputerDto);
+		else ;
+			
 		request.setAttribute("listeComputer", listeComputerDto);
 		request.setAttribute("listIndice",listIndice);
 		request.setAttribute("totalCount", totalComputer);
