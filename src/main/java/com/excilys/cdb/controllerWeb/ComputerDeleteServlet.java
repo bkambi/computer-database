@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.excilys.cdb.exception.DeleteDataException;
+import com.excilys.cdb.services.ComputerServices;
+
 /**
  * Servlet implementation class ComputerDeleteServlet
  */
@@ -15,13 +18,14 @@ public class ComputerDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String [] args = request.getParameter("selection").split(",");
-		for(String s : args)
-		System.out.println(s);
+		try {
+			ComputerServices.handleRequestForDeleteComputer(request,response);
+			response.sendRedirect("/training-java/dashboard");
+		} catch (DeleteDataException e) {
+			e.printStackTrace();
+		}
 	}
-
-
 }

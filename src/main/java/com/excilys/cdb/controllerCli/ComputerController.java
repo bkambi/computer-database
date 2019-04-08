@@ -1,5 +1,6 @@
 package com.excilys.cdb.controllerCli;
 
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -160,7 +161,12 @@ public class ComputerController {
 		if (!forthEnter.equals("q")) {
 			try {
 				Long id = Long.parseLong(forthEnter);
-				daoComputer.delete(id);
+				try {
+					daoComputer.delete(id);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				stringRetour = "Computer delete \n";
 				logger.info(stringRetour);
 			} catch (NumberFormatException e) {

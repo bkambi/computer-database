@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -19,6 +20,7 @@ import java.util.Comparator;
 import com.excilys.cdb.DAO.CompanyDAO;
 import com.excilys.cdb.DAO.ComputerDAO;
 import com.excilys.cdb.DTO.ComputerDTO;
+import com.excilys.cdb.exception.DeleteDataException;
 import com.excilys.cdb.exception.InvalidDataComputerException;
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Company;
@@ -58,7 +60,7 @@ public class ComputerServices {
 	}
 
 	/**
-	 * Filter the list by name
+	 * Filter the list by name la liste visible
 	 * 
 	 * @param req
 	 * @param listComputer
@@ -156,6 +158,27 @@ public class ComputerServices {
 			throw new InvalidDataComputerException();
 		}
 	}
+	
+	/**
+	 * Delete a Computer in the data base using the method of the DAO
+	 * 
+	 * @throws InvalidDataComputerException
+	 */
+
+	public static void handleRequestForDeleteComputer(HttpServletRequest request, HttpServletResponse response)
+			throws DeleteDataException {
+		String [] args = request.getParameter("selection").split(",");
+		List<Long> listeComputerToDelete = new ArrayList<Long>();
+		for(String s : args)
+			listeComputerToDelete.add(Long.valueOf(s));
+		
+		try {
+			daoComputer.delete(listeComputerToDelete);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DeleteDataException();
+		}
+	}
 
 	/**
 	 * Check if the computer have a correct information
@@ -175,7 +198,7 @@ public class ComputerServices {
 	}
 
 	/**
-	 * Get the Liste of the indice for the pagination
+	 * Get the List of the indices for the pagination
 	 * 
 	 * @return
 	 */
@@ -209,7 +232,7 @@ public class ComputerServices {
 		String indiceString = (String) req.getParameter("indice");
 		String numberOfComputerString = (String) req.getParameter("numberOfComputer");
 		String arrayIndice = (String) req.getParameter("arrayIndice");
-
+		
 		int indice = 0;
 		int numberOfComputer = 10;
 
@@ -219,9 +242,11 @@ public class ComputerServices {
 			pageDashboard.setListeCompany(daoCompany.getList());
 			pageDashboard.setIndice(indice);
 			pageDashboard.updateListComputerWithNewNumberOfComputer(numberOfComputer);
+			
 			session.setAttribute("pageDashboard", pageDashboard);
 		} else {
 			try {
+				System.out.println("try");
 				int maxRang = pageDashboard.getListeComputer().size() / pageDashboard.getNumberOfComputer();
 				int minRang = 0;
 				if ("next".equals(arrayIndice)) {

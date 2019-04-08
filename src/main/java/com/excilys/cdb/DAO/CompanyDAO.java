@@ -15,8 +15,8 @@ public class CompanyDAO {
 	private Logger logger = Logger.getLogger(CompanyDAO.class.getName());
 
 	private final static String INSERT_COMPANY = "INSERT INTO company(name) VALUE(?)";
-	private final static String SELECT_A_COMPANY = "SELECT * FROM company WHERE id = ?";
-	private final static String SELECT_COMPANIES = "SELECT * FROM company";
+	private final static String SELECT_A_COMPANY = "SELECT id,name FROM company WHERE id = ?";
+	private final static String SELECT_COMPANIES = "SELECT id,name FROM company";
 	private final static String DELETE_COMPANY = "DELETE FROM company WHERE id = ?";
 
 	/**
@@ -110,17 +110,32 @@ public class CompanyDAO {
 	public int delete(Long id) throws SQLException {
 
 		
+		
 		int results = 0;
-		try (Connection conn = HikaricpConnection.getInstance().open()){
-			PreparedStatement ps = conn.prepareStatement(DELETE_COMPANY);
-			ps.setLong(1, id);
-			results = ps.executeUpdate();
-		} catch (SQLException e) {
-
-			logger.error("delete : catch SQL Exception");
+		Connection conn = HikaricpConnection.getInstance().open();
+		try {
+				conn.setAutoCommit(false);
+				results = new ComputerDAO().deleteComputerByCompanyId(id);
+				PreparedStatement ps = conn.prepareStatement(DELETE_COMPANY);
+				ps.setLong(1, id);
+				results = ps.executeUpdate();
+		} catch (Exception e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+				logger.error("delete : catch SQL Exception");
+			}
 			e.printStackTrace();
-		} 
-
+		} finally {
+			try {
+				conn.commit();
+				conn.close();
+			} catch (SQLException e) {
+				logger.error("delete : catch SQL Exception");
+				e.printStackTrace();
+			}
+		}
 		return results;
 	}
 

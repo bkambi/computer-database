@@ -6,10 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.log4j.Logger;
 
 import com.excilys.cdb.View;
+import com.excilys.cdb.exception.DeleteDataException;
 import com.excilys.cdb.model.Computer;
 
 public class ComputerDAO {
@@ -17,10 +19,11 @@ public class ComputerDAO {
 	private Logger logger = Logger.getLogger(ComputerDAO.class.getName());
 
 	private final static String INSERT_COMPUTER = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUE(?,?,?,?)";
-	private final static String SELECT_A_COMPUTER = "SELECT * FROM computer WHERE id = ?";
-	private final static String SELECT_COMPUTERS = "SELECT * FROM computer";
+	private final static String SELECT_A_COMPUTER = "SELECT id,name,introduced,discontinued,company_id FROM computer WHERE id = ?";
+	private final static String SELECT_COMPUTERS = "SELECT id,name,introduced,discontinued,company_id FROM computer";
 	private final static String UPDATE_COMPUTER = "UPDATE computer SET name = ? , introduced =?,discontinued=?,company_id=?  WHERE id = ?";
 	private final static String DELETE_COMPUTER = "DELETE FROM computer WHERE id = ?";
+	private final static String DELETE_COMPUTERS_BY_COMPANY_ID = "DELETE FROM computer WHERE company_id=?";
 
 	/**
 	 * This method add a computer on database
@@ -31,7 +34,7 @@ public class ComputerDAO {
 	 */
 	public int creat(Computer c) {
 		int results = 0;
-		try (Connection conn = HikaricpConnection.getInstance().open()){
+		try (Connection conn = HikaricpConnection.getInstance().open()) {
 			PreparedStatement ps = conn.prepareStatement(INSERT_COMPUTER);
 			ps.setString(1, c.getName());
 			ps.setTimestamp(2, c.getIntroduced());
@@ -41,7 +44,7 @@ public class ComputerDAO {
 		} catch (SQLException e) {
 			logger.error("creat : catch SQL Exception");
 			e.printStackTrace();
-		} 
+		}
 		return results;
 
 	}
@@ -55,7 +58,7 @@ public class ComputerDAO {
 	 */
 	public Computer getById(Long id) {
 
-		try (Connection conn = HikaricpConnection.getInstance().open()){
+		try (Connection conn = HikaricpConnection.getInstance().open()) {
 			PreparedStatement ps = conn.prepareStatement(SELECT_A_COMPUTER);
 			ps.setLong(1, id);
 			ResultSet rs = ps.executeQuery();
@@ -73,7 +76,7 @@ public class ComputerDAO {
 			logger.error("getById : SQL Exception");
 			e.printStackTrace();
 			return new Computer();
-		} 
+		}
 
 	}
 
@@ -85,7 +88,7 @@ public class ComputerDAO {
 	public List<Computer> getList() {
 
 		List<Computer> listReturn = new ArrayList<Computer>();
-		try (Connection conn = HikaricpConnection.getInstance().open()){
+		try (Connection conn = HikaricpConnection.getInstance().open()) {
 			PreparedStatement ps = conn.prepareStatement(SELECT_COMPUTERS);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
@@ -110,7 +113,7 @@ public class ComputerDAO {
 	public int update(Computer c) {
 		int results = 0;
 
-		try (Connection conn = HikaricpConnection.getInstance().open()){
+		try (Connection conn = HikaricpConnection.getInstance().open()) {
 			PreparedStatement ps = conn.prepareStatement(UPDATE_COMPUTER);
 			ps.setString(1, c.getName());
 			ps.setTimestamp(2, c.getIntroduced());
@@ -122,7 +125,7 @@ public class ComputerDAO {
 
 			logger.error("update : catch SQL Exception");
 			e.printStackTrace();
-		} 
+		}
 		return results;
 	}
 
@@ -131,20 +134,113 @@ public class ComputerDAO {
 	 * 
 	 * @return either (1) the row count for SQL Data Manipulation Language (DML)
 	 *         statements or (2) 0 for SQL statements that return nothing
+	 * @throws SQLException
 	 */
-	public int delete(Long id) {
+	public int delete(Long id) throws SQLException {
 
 		int results = 0;
-		try (Connection conn = HikaricpConnection.getInstance().open()){
+		Connection conn = HikaricpConnection.getInstance().open();
+		try {
+			conn.setAutoCommit(false);
 			PreparedStatement ps = conn.prepareStatement(DELETE_COMPUTER);
 			ps.setLong(1, id);
 			results = ps.executeUpdate();
-		} catch (SQLException e) {
-
-			logger.error("delete : catch SQL Exception");
+			
+		} catch (Exception e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+				logger.error("delete : catch SQL Exception");
+			}
 			e.printStackTrace();
+		} finally {
+			try {
+				conn.commit();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-
 		return results;
 	}
+	
+
+	/**
+	 * This method delete a computer 1 or multiple computer
+	 * 
+	 * @return either (1) the row count for SQL Data Manipulation Language (DML)
+	 *         statements or (2) 0 for SQL statements that return nothing
+	 * @throws SQLException
+	 */
+	public int delete(List<Long> listeId) throws SQLException {
+
+		int results = 0;
+		Connection conn = HikaricpConnection.getInstance().open();
+		try {
+			conn.setAutoCommit(false);
+			for (Long id : listeId) {
+				PreparedStatement ps = conn.prepareStatement(DELETE_COMPUTER);
+				ps.setLong(1, id);
+				results += ps.executeUpdate();
+			}
+
+		} catch (Exception e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+				logger.error("delete : catch SQL Exception");
+			}
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.commit();
+				conn.close();
+			} catch (SQLException e) {
+				logger.error("delete : catch SQL Exception");
+				e.printStackTrace();
+			}
+		}
+		return results;
+	}
+	/**
+	 * This method delete a computer
+	 * 
+	 * @return either (1) the row count for SQL Data Manipulation Language (DML)
+	 *         statements or (2) 0 for SQL statements that return nothing
+	 * @throws SQLException
+	 */
+	public int deleteComputerByCompanyId(Long companyId) throws SQLException {
+
+		int results = 0;
+		Connection conn = HikaricpConnection.getInstance().open();
+		try {
+			conn.setAutoCommit(false);
+			PreparedStatement ps = conn.prepareStatement(DELETE_COMPUTERS_BY_COMPANY_ID);
+			ps.setLong(1, companyId);
+			results = ps.executeUpdate();
+			
+		} catch (Exception e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+				logger.error("delete : catch SQL Exception");
+			}
+			e.printStackTrace();
+			
+		} finally {
+			try {
+				conn.commit();
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return results;
+	}
+	
 }

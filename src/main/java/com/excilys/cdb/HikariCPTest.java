@@ -30,9 +30,6 @@ public class HikariCPTest {
 
 			datasource = new HikariDataSource(config);
 
-			// Examines both filesystem and classpath for .properties file
-//			HikariConfig config = new HikariConfig("/ressources/hikaricp.properties");
-//			datasource = new HikariDataSource(config);
 		}
 		return datasource;
 	}
