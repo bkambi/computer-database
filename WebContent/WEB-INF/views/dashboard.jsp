@@ -25,7 +25,7 @@
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${totalCount}Computers found</h1>
+			<h1 id="homeTitle">${totalCount}Computersfound</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm"
@@ -45,10 +45,11 @@
 				</div>
 			</div>
 		</div>
-		<form id="deleteForm" action="<%=request.getContextPath()%>/delete-computer" method="POST">
-		<c:forEach items="${listeComputer}" var="Computer">
+		<form id="deleteForm"
+			action="<%=request.getContextPath()%>/delete-computer" method="POST">
+			<c:forEach items="${listeComputer}" var="Computer">
 				<input type="hidden" name="selection" value="${Computer.id}">
-		</c:forEach>
+			</c:forEach>
 		</form>
 		<div class="container" style="margin-top: 10px;">
 			<table class="table table-striped table-bordered">
@@ -64,26 +65,57 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th>Computer name <a href="?orderBy=1&reversed=0"><span
+						<th>Computer name <a
+							href="?<%=request.getParameter("search") == null ? "" : "search=" + request.getParameter("search") + "&"%>
+						<%=request.getParameter("numberOfComputer") == null ? ""
+					: "numberOfComputer=" + request.getParameter("numberOfComputer") + "&"%>
+						orderBy=1&reversed=0"><span
 								class="glyphicon glyphicon-chevron-up"></span> </a> <a
-							href="?orderBy=1&reversed=1"><span
+							href="?<%=request.getParameter("search") == null ? "" : "search=" + request.getParameter("search") + "&"%>
+							<%=request.getParameter("numberOfComputer") == null ? ""
+					: "numberOfComputer=" + request.getParameter("numberOfComputer") + "&"%>
+							orderBy=1&reversed=1"><span
 								class="glyphicon glyphicon-chevron-down"></span></a>
 						</th>
-						<th>Introduced date <a href="?orderBy=2&reversed=0"><span
+						<th>Introduced date <a
+							href="?<%=request.getParameter("search") == null ? "" : "search=" + request.getParameter("search") + "&"%>
+						<%=request.getParameter("numberOfComputer") == null ? ""
+					: "numberOfComputer=" + request.getParameter("numberOfComputer") + "&"%>
+						orderBy=2&reversed=0"><span
 								class="glyphicon glyphicon-chevron-up"></span> </a> <a
-							href="?orderBy=2&reversed=1"><span
+							href="?<%=("").equals(request.getParameter("search")) ? ""
+					: "search=" + request.getParameter("search") + "&"%>
+							<%=request.getParameter("numberOfComputer") == null ? ""
+					: "numberOfComputer=" + request.getParameter("numberOfComputer") + "&"%>
+							orderBy=2&reversed=1"><span
 								class="glyphicon glyphicon-chevron-down"></span></a>
 						</th>
 						<!-- Table header for Discontinued Date -->
-						<th>Discontinued date <a href="?orderBy=3&reversed=0"><span
+						<th>Discontinued date <a
+							href="?<%=request.getParameter("search") == null ? "" : "search=" + request.getParameter("search") + "&"%>
+						<%=request.getParameter("numberOfComputer") == null ? ""
+					: "numberOfComputer=" + request.getParameter("numberOfComputer") + "&"%>
+						orderBy=3&reversed=0"><span
 								class="glyphicon glyphicon-chevron-up"></span> </a> <a
-							href="?orderBy=3&reversed=1"><span
+							href="?<%=("").equals(request.getParameter("search")) ? ""
+					: "search=" + request.getParameter("search") + "&"%>
+							<%=request.getParameter("numberOfComputer") == null ? ""
+					: "numberOfComputer=" + request.getParameter("numberOfComputer") + "&"%>
+							orderBy=3&reversed=1"><span
 								class="glyphicon glyphicon-chevron-down"></span></a>
 						</th>
 						<!-- Table header for Company -->
-						<th>Company <a href="?orderBy=4&reversed=0"><span
+						<th>Company <a
+							href="?<%=request.getParameter("search") == null ? "" : "search=" + request.getParameter("search") + "&"%>
+						<%=request.getParameter("numberOfComputer") == null ? ""
+					: "numberOfComputer=" + request.getParameter("numberOfComputer") + "&"%>
+						orderBy=4&reversed=0"><span
 								class="glyphicon glyphicon-chevron-up"></span> </a> <a
-							href="?orderBy=4&reversed=1"><span
+							href="?<%=("").equals(request.getParameter("search")) ? ""
+					: "search=" + request.getParameter("search") + "&"%>
+							<%=request.getParameter("numberOfComputer") == null ? ""
+					: "numberOfComputer=" + request.getParameter("numberOfComputer") + "&"%>
+							orderBy=4&reversed=1"><span
 								class="glyphicon glyphicon-chevron-down"></span></a>
 						</th>
 
@@ -111,23 +143,53 @@
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
 			<ul class="pagination">
-				<li><a href="?arrayIndice=previous" aria-label="Previous">
-						<span aria-hidden="true">&laquo;</span>
+				<li><a
+					href="?<%=request.getParameter("search") == null ? "" : "search=" + request.getParameter("search") + "&"%>
+				<%=request.getParameter("numberOfComputer") == null ? ""
+					: "numberOfComputer=" + request.getParameter("numberOfComputer") + "&"%>
+				<%=request.getParameter("orderBy") == null & request.getParameter("reversed") == null ? ""
+					: "orderBy=" + request.getParameter("orderBy") + "&reversed=" + request.getParameter("reversed")
+							+ "&"%>arrayIndice=previous"
+					aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 				</a></li>
 				<c:forEach items="${listIndice}" var="indice">
-					<li><a href="?indice=${indice}">${indice}</a></li>
+					<li><a
+						href="?<%=request.getParameter("search") == null? "" :"search=" +request.getParameter("search")+"&"%>
+					<%=request.getParameter("numberOfComputer") == null ? "" :"numberOfComputer=" +request.getParameter("numberOfComputer")+"&"%>
+					<%=request.getParameter("orderBy") == null & request.getParameter("reversed") == null ? "" :"orderBy="+request.getParameter("orderBy")+"&reversed=" +request.getParameter("reversed")+"&"%>
+					indice=${indice}">${indice}</a></li>
 				</c:forEach>
-				<li><a href="?arrayIndice=next" aria-label="Next"> <span
-						aria-hidden="true">&raquo;</span>
-				</a></li>
+				<li><a
+					href="?<%=request.getParameter("search") == null ? "" : "search=" + request.getParameter("search") + "&"%>
+				<%=request.getParameter("numberOfComputer") == null ? ""
+					: "numberOfComputer=" + request.getParameter("numberOfComputer") + "&"%>
+				<%=request.getParameter("orderBy") == null & request.getParameter("reversed") == null ? ""
+					: "orderBy=" + request.getParameter("orderBy") + "&reversed=" + request.getParameter("reversed")
+							+ "&"%>
+				arrayIndice=next"
+					aria-label="Next"><span aria-hidden="true">&raquo;</span> </a></li>
 			</ul>
 
 			<div class="btn-group btn-group-sm pull-right" role="group">
-				<a href="?numberOfComputer=10"><button type="button"
-						class="btn btn-default">10</button></a> <a href="?numberOfComputer=50"><button
+				<a
+					href="?<%=request.getParameter("search") == null ? "" : "search=" + request.getParameter("search") + "&"%>
+					<%=request.getParameter("orderBy") == null & request.getParameter("reversed") == null ? ""
+					: "orderBy=" + request.getParameter("orderBy") + "&reversed=" + request.getParameter("reversed")
+							+ "&"%>numberOfComputer=10"><button
+						type="button" class="btn btn-default">10</button></a> <a
+					href="?<%=("").equals(request.getParameter("search")) ? ""
+					: "search=" + request.getParameter("search") + "&"%>
+						<%=request.getParameter("orderBy") == null & request.getParameter("reversed") == null ? ""
+					: "orderBy=" + request.getParameter("orderBy") + "&reversed=" + request.getParameter("reversed")
+							+ "&"%>
+						numberOfComputer=50"><button
 						type="button" class="btn btn-default">50</button></a> <a
-					href="?numberOfComputer=100"><button type="button"
-						class="btn btn-default">100</button></a>
+					href="?<%=request.getParameter("search") == null ? "" : "search=" + request.getParameter("search") + "&"%>
+					<%=request.getParameter("orderBy") == null & request.getParameter("reversed") == null ? ""
+					: "orderBy=" + request.getParameter("orderBy") + "&reversed=" + request.getParameter("reversed")
+							+ "&"%>
+					numberOfComputer=100"><button
+						type="button" class="btn btn-default">100</button></a>
 			</div>
 		</div>
 	</footer>

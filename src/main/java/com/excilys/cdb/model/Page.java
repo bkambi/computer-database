@@ -1,5 +1,6 @@
 package com.excilys.cdb.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -95,16 +96,26 @@ public class Page {
 	
 	public void updateListComputerWithNewIndice(int indice) {
 			this.setIndice(indice); 
+			if( listeComputer.size() != 0) {
 			int fromIndex = (indice*numberOfComputer) <= listeComputer.size()-1 ? (indice*numberOfComputer) : listeComputer.size()-1-numberOfComputer;
 			int toIndex = (fromIndex + numberOfComputer) <= listeComputer.size()-1 ? (fromIndex + numberOfComputer) : listeComputer.size() -1;
 			this.setListeComputerToShow(listeComputer.subList(fromIndex, toIndex));
+			}
+			else {
+				this.setListeComputerToShow(new ArrayList<Computer> ());
+			}
 	}
 	
 	public void updateListComputerWithNewNumberOfComputer(int numberOfComputer){
 		this.setNumberOfComputer(numberOfComputer);
-		int fromIndex = (indice*numberOfComputer) <= listeComputer.size()-1 ? (indice*numberOfComputer) : listeComputer.size()-1-numberOfComputer;
-		int toIndex = (fromIndex + numberOfComputer) <= listeComputer.size()-1 ? (fromIndex + numberOfComputer) : listeComputer.size()-1 ;
-		this.setListeComputerToShow(listeComputer.subList(fromIndex, toIndex));
+		if( listeComputer.size() != 0) {
+			int fromIndex = (indice*numberOfComputer) <= listeComputer.size()-1 ? (indice*numberOfComputer) : listeComputer.size()-1-numberOfComputer;
+			int toIndex = (fromIndex + numberOfComputer) <= listeComputer.size()-1 ? (fromIndex + numberOfComputer) : listeComputer.size()-1 ;
+			this.setListeComputerToShow(listeComputer.subList(fromIndex, toIndex));
+		}else {
+			this.setListeComputerToShow(new ArrayList<Computer> ());
+		}
+		
 	}
 	
 	

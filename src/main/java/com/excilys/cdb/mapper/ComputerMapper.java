@@ -20,7 +20,7 @@ public class ComputerMapper {
 	 * @return
 	 */
 	public static ComputerDTO mapDTO(Computer computer, String company) {
-		
+	
 		String introduced = computer.getIntroduced() != null ?computer.getIntroduced().toString().split(" ")[0] :  "";
 		String discontinued = computer.getDiscontinued() != null ?computer.getDiscontinued().toString().split(" ")[0] :"";
 		ComputerDTO c = new ComputerDTO.ComputerDTOBuilder()

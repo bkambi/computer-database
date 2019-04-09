@@ -36,14 +36,11 @@ public class HomeServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		List<ComputerDTO> listeComputerDto = ComputerServices.getListComputerToShowService(request);
-		List<String> listIndice = ComputerServices.getListIndice();
+		List<String> listIndice = ComputerServices.getListIndice(request);
 		String totalComputer = ComputerServices.getTotalComputer();
 		
 		//TODO filtrer la grande liste
-		
-		if(request.getParameter("search")!= null )
-			listeComputerDto = ComputerServices.getFilterListComputer(request, listeComputerDto);
-		else if(request.getParameter("orderBy")!= null && request.getParameter("reversed")!=null)
+		if(request.getParameter("orderBy")!= null && request.getParameter("reversed")!=null)
 			listeComputerDto = ComputerServices.getOrderListComputer(request, listeComputerDto);
 		else ;
 		
