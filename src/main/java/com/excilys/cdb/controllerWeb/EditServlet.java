@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.excilys.cdb.DAO.CompanyDAO;
 import com.excilys.cdb.DTO.ComputerDTO;
 import com.excilys.cdb.services.ComputerServices;
@@ -19,15 +21,23 @@ import com.excilys.cdb.services.ComputerServices;
  */
 @WebServlet("/edit-computer")
 public class EditServlet extends HttpServlet {
-	private CompanyDAO dao = new CompanyDAO();
+	  
+	@Autowired
+	private CompanyDAO dao ;
 	private static final long serialVersionUID = 1L;
-      
+     
+	private ComputerServices computerServices;
+	
+	@Autowired
+	public EditServlet(ComputerServices computerServices) {
+		this.computerServices = computerServices ;
+	}
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
-		ComputerDTO computerDto = ComputerServices.getComputerDTO(request).isPresent()? ComputerServices.getComputerDTO(request).get() : null; 
+		ComputerDTO computerDto = computerServices.getComputerDTO(request).isPresent()? computerServices.getComputerDTO(request).get() : null; 
 	
 		if(computerDto == null) {
 			response.sendRedirect("/dashboard");

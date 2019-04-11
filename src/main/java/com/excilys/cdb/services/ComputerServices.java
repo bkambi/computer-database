@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -29,19 +31,25 @@ import com.excilys.cdb.model.Page;
 import com.excilys.cdb.util.Parser;
 import com.excilys.cdb.util.enume.OrderBy;
 
+@Component
 public class ComputerServices {
-
-	private static ComputerDAO daoComputer = new ComputerDAO();
-	private static CompanyDAO daoCompany = new CompanyDAO();
-	private static Page pageDashboard;
-
+ 
+	@Autowired
+	private  ComputerDAO daoComputer ;
+	@Autowired
+	private  CompanyDAO daoCompany ;
+	private  Page pageDashboard;
+	
+	public ComputerServices() {
+	}
+ 
 	/**
 	 * Return a Computer DTO if is not null : using Optional and the method of the
 	 * DAO
 	 * 
 	 * @return ComputerDTO , DTO useful for the view
 	 */
-	public static List<ComputerDTO> getListComputerToShowService(HttpServletRequest req) {
+	public List<ComputerDTO> getListComputerToShowService(HttpServletRequest req) {
 
 		pageDashboardInit(req);
 		
@@ -67,7 +75,7 @@ public class ComputerServices {
 	 * @throws InvalidDataComputerException
 	 */
 
-	public static void handleRequestForAddComputer(HttpServletRequest request, HttpServletResponse response)
+	public void handleRequestForAddComputer(HttpServletRequest request, HttpServletResponse response)
 			throws InvalidDataComputerException {
 
 		Computer computer;
@@ -86,7 +94,7 @@ public class ComputerServices {
 	 * @throws InvalidDataComputerException
 	 */
 
-	public static void handleRequestForUpdateComputer(HttpServletRequest request, HttpServletResponse response)
+	public  void handleRequestForUpdateComputer(HttpServletRequest request, HttpServletResponse response)
 			throws InvalidDataComputerException {
 		Computer computer;
 		Optional<Computer> optionalComputer = ComputerMapper.mapViewDtoToComputer(request);
@@ -104,7 +112,7 @@ public class ComputerServices {
 	 * @throws InvalidDataComputerException
 	 */
 
-	public static void handleRequestForDeleteComputer(HttpServletRequest request, HttpServletResponse response)
+	public  void handleRequestForDeleteComputer(HttpServletRequest request, HttpServletResponse response)
 			throws DeleteDataException {
 		String[] args = request.getParameter("selection").split(",");
 		List<Long> listeComputerToDelete = new ArrayList<Long>();
@@ -125,7 +133,7 @@ public class ComputerServices {
 	 * @param computer
 	 * @return boolean , true if is validate , false if is not
 	 */
-	public static boolean isValidatedByTheBack(Computer computer) {
+	public boolean isValidatedByTheBack(Computer computer) {
 		boolean results = false;
 		if (computer.getIntroduced().before(computer.getDiscontinued())) {
 			Optional<Company> optionalCompany = daoCompany.getById(computer.getCompany_id());
@@ -141,7 +149,7 @@ public class ComputerServices {
 	 * 
 	 * @return
 	 */
-	public static List<String> getListIndice(HttpServletRequest req) {
+	public  List<String> getListIndice(HttpServletRequest req) {
 		HttpSession session = req.getSession();
 		List<String> listIndiceRetour = new ArrayList<String>();
 		pageDashboard = (Page) session.getAttribute("pageDashboard");
@@ -166,7 +174,7 @@ public class ComputerServices {
 	 * 
 	 * @param req
 	 */
-	public static void pageDashboardInit(HttpServletRequest req) {
+	public  void pageDashboardInit(HttpServletRequest req) {
 		HttpSession session = req.getSession();
 		
 		String indiceString = (String) req.getParameter("indice");
@@ -176,7 +184,7 @@ public class ComputerServices {
 		
 		int indice = 0;
 		int numberOfComputer = 10;
-
+ 
 		if (session.getAttribute("pageDashboard") == null) {
 			pageDashboard = new Page();
 			pageDashboard.setListeComputer(daoComputer.getList());
@@ -222,7 +230,7 @@ public class ComputerServices {
 		}
 	}
 
-	public static Optional<ComputerDTO> getComputerDTO(HttpServletRequest req) {
+	public  Optional<ComputerDTO> getComputerDTO(HttpServletRequest req) {
 
 		ComputerDTO computerDto = null;
 
@@ -242,7 +250,7 @@ public class ComputerServices {
 
 	}
 
-	public static String getTotalComputer() {
+	public  String getTotalComputer() {
 		return String.valueOf(pageDashboard.getListeComputer().size());
 
 	}
@@ -254,7 +262,7 @@ public class ComputerServices {
 	 * @param listComputer
 	 * @return
 	 */
-	public static List<Computer> getFilterAllListComputer(String searchParam ) {
+	public  List<Computer> getFilterAllListComputer(String searchParam ) {
 
 
 		List<Computer> listAllComputer = daoComputer.getList();
@@ -293,7 +301,7 @@ public class ComputerServices {
 	}
 
 
-	public static List<ComputerDTO> getOrderListComputer(HttpServletRequest req, List<ComputerDTO> listComputer) {
+	public  List<ComputerDTO> getOrderListComputer(HttpServletRequest req, List<ComputerDTO> listComputer) {
 
 		String orderByPram = req.getParameter("orderBy");
 		String reverseParam = req.getParameter("reversed");

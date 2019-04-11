@@ -20,7 +20,7 @@ public class HikaricpConnection {
     private static DataSource dataSource ;
     
     private final static HikaricpConnection hikaricpConnection = new HikaricpConnection();
-    
+     
     /** Constructeur privé */
     private HikaricpConnection() {
     	try {
@@ -28,7 +28,7 @@ public class HikaricpConnection {
 		} catch (ClassNotFoundException e) {
 			logger.error("Class Not Found Exception");
 			e.printStackTrace();
-		}
+		} 
     	config.setJdbcUrl("jdbc:mysql://localhost:3306/computer-database-db?useSSL=false");
 		config.setUsername("admincdb");
 		config.setPassword("qwerty1234");

@@ -16,14 +16,18 @@ import com.excilys.cdb.services.ComputerServices;
 @WebServlet("/editComputer")
 public class ComputerEditServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	private ComputerServices computerServices;
+	
+	public ComputerEditServlet(ComputerServices computerServices) {
+		this.computerServices =computerServices;
+	}
  
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			ComputerServices.handleRequestForUpdateComputer(request, response);
+			computerServices.handleRequestForUpdateComputer(request, response);
 			response.sendRedirect("/dashboard");
 		} catch (InvalidDataComputerException e) {
 			// TODO Auto-generated catch block

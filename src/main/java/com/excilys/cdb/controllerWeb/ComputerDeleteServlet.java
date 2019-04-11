@@ -17,12 +17,16 @@ import com.excilys.cdb.services.ComputerServices;
 public class ComputerDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	private ComputerServices computerServices;
+	public ComputerDeleteServlet(ComputerServices computerServices) {
+		this.computerServices = computerServices ;
+	}
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			ComputerServices.handleRequestForDeleteComputer(request,response);
+			computerServices.handleRequestForDeleteComputer(request,response);
 			response.sendRedirect("/training-java/dashboard");
 		} catch (DeleteDataException e) {
 			e.printStackTrace();

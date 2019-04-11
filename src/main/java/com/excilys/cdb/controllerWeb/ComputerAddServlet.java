@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.excilys.cdb.exception.InvalidDataComputerException;
 import com.excilys.cdb.services.ComputerServices;
 
@@ -16,13 +18,15 @@ import com.excilys.cdb.services.ComputerServices;
 @WebServlet("/new-computer")
 public class ComputerAddServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	
+	private ComputerServices computerServices;
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ComputerAddServlet() {
+	@Autowired
+    public ComputerAddServlet(ComputerServices computerServices) {
         super();
-        // TODO Auto-generated constructor stub
+        this.computerServices = computerServices;
     }
 
 	/**
@@ -36,7 +40,7 @@ public class ComputerAddServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			ComputerServices.handleRequestForAddComputer(request,response);
+			computerServices.handleRequestForAddComputer(request,response);
 			response.sendRedirect("/dashboard");
 		} catch (InvalidDataComputerException e) {
 			// TODO Auto-generated catch block

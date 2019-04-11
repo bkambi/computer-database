@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.excilys.cdb.DAO.CompanyDAO;
 
 
@@ -19,8 +21,9 @@ import com.excilys.cdb.DAO.CompanyDAO;
  */
 @WebServlet("/add-computer")
 public class AddServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;  
-	private CompanyDAO dao = new CompanyDAO();
+	private static final long serialVersionUID = 1L;
+	@Autowired
+	private CompanyDAO dao ;
 			
     /**
      * @see HttpServlet#HttpServlet()

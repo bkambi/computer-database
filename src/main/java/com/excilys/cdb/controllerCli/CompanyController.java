@@ -17,15 +17,15 @@ public class CompanyController {
 	 * 
 	 * @return
 	 */
-	public String showListCompany() {
-		stringRetour = "";
-		CompanyDAO daoCompany = new CompanyDAO();
-		List<Company> listeCompany = new ArrayList<Company>();
-		listeCompany = daoCompany.getList();
-		for (Company c : listeCompany) {
-			stringRetour += c.toString();
-		}
-		return stringRetour += "\n";
-	}
+//	public String showListCompany() {
+//		stringRetour = "";
+//		CompanyDAO daoCompany = new CompanyDAO();
+//		List<Company> listeCompany = new ArrayList<Company>();
+//		listeCompany = daoCompany.getList();
+//		for (Company c : listeCompany) {
+//			stringRetour += c.toString();
+//		}
+//		return stringRetour += "\n";
+//	}
 
 }

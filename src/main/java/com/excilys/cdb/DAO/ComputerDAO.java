@@ -9,11 +9,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.View;
 import com.excilys.cdb.exception.DeleteDataException;
 import com.excilys.cdb.model.Computer;
-
+@Component
 public class ComputerDAO {
 
 	private Logger logger = Logger.getLogger(ComputerDAO.class.getName());
@@ -24,6 +27,10 @@ public class ComputerDAO {
 	private final static String UPDATE_COMPUTER = "UPDATE computer SET name = ? , introduced =?,discontinued=?,company_id=?  WHERE id = ?";
 	private final static String DELETE_COMPUTER = "DELETE FROM computer WHERE id = ?";
 	private final static String DELETE_COMPUTERS_BY_COMPANY_ID = "DELETE FROM computer WHERE company_id=?";
+
+//	@Autowired
+//	private JdbcTemplate jdbcTemplate;
+		
 
 	/**
 	 * This method add a computer on database

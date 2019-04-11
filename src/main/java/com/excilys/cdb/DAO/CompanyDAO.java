@@ -1,23 +1,35 @@
 package com.excilys.cdb.DAO;
 
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
-import com.excilys.cdb.View;
 import com.excilys.cdb.model.Company;
 
+@Component
 public class CompanyDAO {
 
+	@Autowired
+    private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private ComputerDAO computerDAO ;
+	 
 	private Logger logger = Logger.getLogger(CompanyDAO.class.getName());
-
+	
 	private final static String INSERT_COMPANY = "INSERT INTO company(name) VALUE(?)";
 	private final static String SELECT_A_COMPANY = "SELECT id,name FROM company WHERE id = ?";
 	private final static String SELECT_COMPANIES = "SELECT id,name FROM company";
 	private final static String DELETE_COMPANY = "DELETE FROM company WHERE id = ?";
+	
 
 	/**
 	 * This method add a Company on database
@@ -78,35 +90,39 @@ public class CompanyDAO {
 	 * @return List<Company> The list of all Company
 	 * @throws SQLException 
 	 */
-	@SuppressWarnings("finally")
+//	@SuppressWarnings("finally")
+//	public List<Company> getList() {
+//
+//		List<Company> listReturn = new ArrayList<Company>();
+//		//Connection conn = null;
+//
+//		try (Connection conn = HikaricpConnection.getInstance().open()){
+//			
+//			PreparedStatement ps = conn.prepareStatement(SELECT_COMPANIES);
+//			ResultSet rs = ps.executeQuery();
+//			while (rs.next()) {
+//				Company c = new Company(rs.getLong("id"), rs.getString("name"));
+//				listReturn.add(c);
+//			}
+//		} catch (SQLException e) {
+//
+//			logger.error("getList : SQL Exception");
+//			e.printStackTrace();
+//		} 
+//		return listReturn;
+//	}
 	public List<Company> getList() {
-
-		List<Company> listReturn = new ArrayList<Company>();
-		//Connection conn = null;
-
-		try (Connection conn = HikaricpConnection.getInstance().open()){
-			
-			PreparedStatement ps = conn.prepareStatement(SELECT_COMPANIES);
-			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
-				Company c = new Company(rs.getLong("id"), rs.getString("name"));
-				listReturn.add(c);
-			}
-		} catch (SQLException e) {
-
-			logger.error("getList : SQL Exception");
-			e.printStackTrace();
-		} 
-		return listReturn;
+        List < Company > persons = jdbcTemplate.query(SELECT_COMPANIES,
+        		new BeanPropertyRowMapper<Company>(Company.class));
+        return persons;
 	}
-
 	/**
 	 * This method delete a Company
 	 * 
 	 * @return either (1) the row count for SQL Data Manipulation Language (DML)
 	 *         statements or (2) 0 for SQL statements that return nothing
 	 * @throws SQLException 
-	 */
+	 */ 
 	public int delete(Long id) throws SQLException {
 
 		
@@ -115,7 +131,7 @@ public class CompanyDAO {
 		Connection conn = HikaricpConnection.getInstance().open();
 		try {
 				conn.setAutoCommit(false);
-				results = new ComputerDAO().deleteComputerByCompanyId(id);
+				results =computerDAO.deleteComputerByCompanyId(id);
 				PreparedStatement ps = conn.prepareStatement(DELETE_COMPANY);
 				ps.setLong(1, id);
 				results = ps.executeUpdate();
