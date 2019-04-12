@@ -20,8 +20,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import com.excilys.cdb.SpringConfiguration;
 import com.excilys.cdb.DTO.ComputerDTO;
+import com.excilys.cdb.config.SpringConfiguration;
 import com.excilys.cdb.model.Page;
 import com.excilys.cdb.services.ComputerServices;
 
@@ -31,37 +31,17 @@ import com.excilys.cdb.services.ComputerServices;
 @WebServlet("/dashboard")
 public class HomeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
-	Logger logger = LoggerFactory.getLogger(HomeServlet.class);
-	 
 
-	
-	
-private static AnnotationConfigApplicationContext app = new AnnotationConfigApplicationContext(SpringConfiguration.class);
-private ComputerServices computerServices;
-	
-//	/**
-//	 * @see HttpServlet#HttpServlet()
-//	 */
-//	
-//	public HomeServlet (ComputerServices computerServices) {
-//		super();
-//		this.computerServices = computerServices;
-//	}
-	
-	public HomeServlet () {
-		System.out.println("homeservlet");
-		logger.debug("nimpQuoi");
-	}
+	Logger logger = LoggerFactory.getLogger(HomeServlet.class);
+
+	@Autowired
+	private ComputerServices computerServices;
+
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		// TODO Auto-generated method stub
-		System.out.println("bonjour init");
-		computerServices =app.getBean(ComputerServices.class);
 		super.init(config);
 		SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
-		//SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
-
 	}
 
 	/**

@@ -2,6 +2,7 @@ package com.excilys.cdb;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import com.excilys.cdb.config.SpringConfiguration;
 import com.excilys.cdb.services.ComputerServices;
 
 public class Test {
