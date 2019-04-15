@@ -1,11 +1,11 @@
-package com.excilys.cdb.controllerCli;
+package com.excilys.cdb.controller.cli;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.excilys.cdb.DAO.CompanyDAO;
+import com.excilys.cdb.dao.CompanyDAO;
 import com.excilys.cdb.model.Company;
 
 public class CompanyController {

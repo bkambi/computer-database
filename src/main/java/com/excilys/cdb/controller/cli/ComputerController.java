@@ -1,4 +1,4 @@
-package com.excilys.cdb.controllerCli;
+package com.excilys.cdb.controller.cli;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 
-import com.excilys.cdb.DAO.ComputerDAO;
+import com.excilys.cdb.dao.ComputerDAO;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Page;
 

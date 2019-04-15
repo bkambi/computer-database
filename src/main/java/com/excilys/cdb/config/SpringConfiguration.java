@@ -1,5 +1,6 @@
 package com.excilys.cdb.config;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -14,11 +15,13 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 @PropertySource(value = { "classpath:dataSource.properties" })
 public class SpringConfiguration {
 
+	Logger logger = Logger.getLogger(SpringConfiguration.class);
 	@Autowired
 	private Environment env;
 
 	@Bean
 	public JdbcTemplate jdbcTemplate() {
+		logger.info("Inside jdbcTemplate initializer ...");
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName(env.getRequiredProperty("dataSource.className"));
 		dataSource.setUrl(env.getRequiredProperty("dataSource.url"));

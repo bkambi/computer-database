@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.excilys.cdb.DAO.ComputerDAO;
+import com.excilys.cdb.dao.ComputerDAO;
 import com.excilys.cdb.model.Computer;
 
 public class ComputerDAOTest  {

@@ -1,4 +1,4 @@
-package com.excilys.cdb.controllerWeb;
+package com.excilys.cdb.controller.web;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,8 +20,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import com.excilys.cdb.DTO.ComputerDTO;
 import com.excilys.cdb.config.SpringConfiguration;
+import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.model.Page;
 import com.excilys.cdb.services.ComputerServices;
 

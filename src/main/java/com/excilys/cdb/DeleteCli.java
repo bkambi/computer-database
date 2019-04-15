@@ -11,8 +11,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Component;
 
-import com.excilys.cdb.DAO.CompanyDAO;
 import com.excilys.cdb.config.SpringConfiguration;
+import com.excilys.cdb.dao.CompanyDAO;
 
 public class DeleteCli {
 	

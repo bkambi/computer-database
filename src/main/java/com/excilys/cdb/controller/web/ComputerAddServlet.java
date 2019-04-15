@@ -1,4 +1,4 @@
-package com.excilys.cdb.controllerWeb;
+package com.excilys.cdb.controller.web;
 
 import java.io.IOException;
 
@@ -16,12 +16,12 @@ import com.excilys.cdb.exception.InvalidDataComputerException;
 import com.excilys.cdb.services.ComputerServices;
 
 /**
- * Servlet implementation class ComputerEditServlet
+ * Servlet implementation class ComputerAddServlet
  */
-@WebServlet("/editComputer")
-public class ComputerEditServlet extends HttpServlet {
-	
+@WebServlet("/new-computer")
+public class ComputerAddServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
 	@Autowired
 	private ComputerServices computerServices;
 	
@@ -32,18 +32,23 @@ public class ComputerEditServlet extends HttpServlet {
 		SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
 
 	}
- 
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	}
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			computerServices.handleRequestForUpdateComputer(request, response);
+			computerServices.handleRequestForAddComputer(request,response);
 			response.sendRedirect("/dashboard");
 		} catch (InvalidDataComputerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			response.sendRedirect("/edit-computer");
+			response.sendRedirect("/add-computer");
 		}
 	}
 

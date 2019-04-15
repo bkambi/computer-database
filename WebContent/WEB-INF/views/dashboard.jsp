@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8" import="com.excilys.cdb.DTO.*"%>
+	pageEncoding="UTF-8" import="com.excilys.cdb.dto.*"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
@@ -8,11 +8,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
-<link href="<%=request.getContextPath()%>/static/css/bootstrap.min.css"
+<link href="../../static/css/bootstrap.min.css"
 	rel="stylesheet" media="screen">
-<link href="<%=request.getContextPath()%>/static/css/font-awesome.css"
+<link href="../../static/css/font-awesome.css"
 	rel="stylesheet" media="screen">
-<link href="<%=request.getContextPath()%>/static/css/main.css"
+<link href="../../static/css/main.css"
 	rel="stylesheet" media="screen">
 </head>
 <body>
@@ -193,9 +193,9 @@
 			</div>
 		</div>
 	</footer>
-	<script src="static/js/jquery.min.js"></script>
-	<script src="static/js/bootstrap.min.js"></script>
-	<script src="static/js/dashboard.js"></script>
+	<script src="../../static/js/jquery.min.js"></script>
+	<script src="../../static/js/bootstrap.min.js"></script>
+	<script src="../../static/js/dashboard.js"></script>
 
 </body>
 </html>

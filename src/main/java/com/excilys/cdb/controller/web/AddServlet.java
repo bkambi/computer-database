@@ -1,4 +1,4 @@
-package com.excilys.cdb.controllerWeb;
+package com.excilys.cdb.controller.web;
 
 import java.io.IOException;
 
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import com.excilys.cdb.DAO.CompanyDAO;
+import com.excilys.cdb.dao.CompanyDAO;
 
 
 

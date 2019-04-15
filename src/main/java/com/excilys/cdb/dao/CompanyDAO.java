@@ -1,8 +1,5 @@
-package com.excilys.cdb.DAO;
+package com.excilys.cdb.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -39,19 +36,8 @@ public class CompanyDAO {
 	 *         statements or (2) 0 for SQL statements that return nothing
 	 */
 	public int creat(Company c) {
-
 		int results = 0;
-
-		try (Connection conn = HikaricpConnection.getInstance().open()){
-			PreparedStatement ps = conn.prepareStatement(INSERT_COMPANY);
-			ps.setString(1, c.getName());
-			results = ps.executeUpdate();
-		} catch (SQLException e) {
-
-			logger.error("creat : catch SQL Exception");
-			e.printStackTrace();
-		} 
-
+		 jdbcTemplate.update(INSERT_COMPANY,c.getName());
 		return results;
 	}
 
@@ -63,24 +49,8 @@ public class CompanyDAO {
 	 * @return Company Comes from Database
 	 */
 	public Optional<Company> getById(Long id) {
-
-		Company companyReturn = null;
-		try (Connection conn = HikaricpConnection.getInstance().open()){
-
-			PreparedStatement ps = conn.prepareStatement(SELECT_A_COMPANY);
-			if (id != null) {
-				ps.setLong(1, id);
-				ResultSet rs = ps.executeQuery();
-
-				if (rs.next()) {
-					companyReturn = new Company(rs.getLong("id"), rs.getString("name"));
-				}
-			}
-		} catch (SQLException e) {
-
-			logger.error("getId : SQL Exception");
-			e.printStackTrace();
-		}
+		Company companyReturn= (Company) jdbcTemplate.queryForObject(SELECT_A_COMPANY,
+	            new Object[] { id }, new BeanPropertyRowMapper(Company.class));
 		return Optional.ofNullable(companyReturn);
 	}
 
@@ -90,30 +60,10 @@ public class CompanyDAO {
 	 * @return List<Company> The list of all Company
 	 * @throws SQLException 
 	 */
-//	@SuppressWarnings("finally")
-//	public List<Company> getList() {
-//
-//		List<Company> listReturn = new ArrayList<Company>();
-//		//Connection conn = null;
-//
-//		try (Connection conn = HikaricpConnection.getInstance().open()){
-//			
-//			PreparedStatement ps = conn.prepareStatement(SELECT_COMPANIES);
-//			ResultSet rs = ps.executeQuery();
-//			while (rs.next()) {
-//				Company c = new Company(rs.getLong("id"), rs.getString("name"));
-//				listReturn.add(c);
-//			}
-//		} catch (SQLException e) {
-//
-//			logger.error("getList : SQL Exception");
-//			e.printStackTrace();
-//		} 
-//		return listReturn;
-//	}
 	public List<Company> getList() {
         List < Company > persons = jdbcTemplate.query(SELECT_COMPANIES,
         		new BeanPropertyRowMapper<Company>(Company.class));
+        logger.info("getList();");
         return persons;
 	}
 	/**
@@ -125,34 +75,14 @@ public class CompanyDAO {
 	 */ 
 	public int delete(Long id) throws SQLException {
 
-		
-		
 		int results = 0;
-		Connection conn = HikaricpConnection.getInstance().open();
-		try {
-				conn.setAutoCommit(false);
-				results =computerDAO.deleteComputerByCompanyId(id);
-				PreparedStatement ps = conn.prepareStatement(DELETE_COMPANY);
-				ps.setLong(1, id);
-				results = ps.executeUpdate();
-		} catch (Exception e) {
-			try {
-				conn.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-				logger.error("delete : catch SQL Exception");
-			}
-			e.printStackTrace();
-		} finally {
-			try {
-				conn.commit();
-				conn.close();
-			} catch (SQLException e) {
-				logger.error("delete : catch SQL Exception");
-				e.printStackTrace();
-			}
-		}
+		computerDAO.deleteComputerByCompanyId(id);
+		jdbcTemplate.update(DELETE_COMPANY, id);
 		return results;
+	}
+	
+	public JdbcTemplate getJdbcTemplate() {
+		return jdbcTemplate;
 	}
 
 }

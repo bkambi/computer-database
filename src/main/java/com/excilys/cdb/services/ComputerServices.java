@@ -14,9 +14,9 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.excilys.cdb.DAO.CompanyDAO;
-import com.excilys.cdb.DAO.ComputerDAO;
-import com.excilys.cdb.DTO.ComputerDTO;
+import com.excilys.cdb.dao.CompanyDAO;
+import com.excilys.cdb.dao.ComputerDAO;
+import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.exception.DeleteDataException;
 import com.excilys.cdb.exception.InvalidDataComputerException;
 import com.excilys.cdb.mapper.ComputerMapper;
