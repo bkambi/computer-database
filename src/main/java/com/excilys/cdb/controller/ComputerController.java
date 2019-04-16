@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.excilys.cdb.controller.web.EditServlet;
 import com.excilys.cdb.dao.CompanyDAO;
 import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.exception.DeleteDataException;
@@ -21,7 +20,7 @@ import com.excilys.cdb.services.ComputerServices;
 @Controller
 public class ComputerController {
 
-	Logger logger = LoggerFactory.getLogger(EditServlet.class);
+	Logger logger = LoggerFactory.getLogger(ComputerController.class);
 	
 	@Autowired
 	private CompanyDAO companyDAO ;

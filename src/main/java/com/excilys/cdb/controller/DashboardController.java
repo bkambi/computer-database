@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.excilys.cdb.controller.web.HomeServlet;
+
 import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.services.ComputerServices;
 
 @Controller
 public class DashboardController {
-	Logger logger = LoggerFactory.getLogger(HomeServlet.class);
+	Logger logger = LoggerFactory.getLogger(DashboardController.class);
 
 	@Autowired
 	private ComputerServices computerServices;
