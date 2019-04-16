@@ -19,14 +19,8 @@ public class DeleteCli {
 	static CompanyDAO daoCompany ;
 	public static void main(String[] args) {
 		 
-		
-		try {
-			daoCompany =new CompanyDAO();
-			System.out.println("Nombre délément supprimer : "+ daoCompany.delete(1L));
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		daoCompany =new CompanyDAO();
+		//System.out.println("Nombre délément supprimer : "+ daoCompany.delete(1L));
 	}
 	
 }

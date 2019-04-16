@@ -1,16 +1,20 @@
 package com.excilys.cdb.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.cdb.model.Computer;
+
 @Repository
 public class ComputerDAO {
 
@@ -23,9 +27,8 @@ public class ComputerDAO {
 	private final static String DELETE_COMPUTER = "DELETE FROM computer WHERE id = ?";
 	private final static String DELETE_COMPUTERS_BY_COMPANY_ID = "DELETE FROM computer WHERE company_id=?";
 
-//	@Autowired
-//	private JdbcTemplate jdbcTemplate;
-		
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 
 	/**
 	 * This method add a computer on database
@@ -34,20 +37,15 @@ public class ComputerDAO {
 	 * @return either (1) the row count for SQL Data Manipulation Language (DML)
 	 *         statements or (2) 0 for SQL statements that return nothing
 	 */
-	public int creat(Computer c) {
-		int results = 0;
-		try (Connection conn = HikaricpConnection.getInstance().open()) {
-			PreparedStatement ps = conn.prepareStatement(INSERT_COMPUTER);
-			ps.setString(1, c.getName());
-			ps.setTimestamp(2, c.getIntroduced());
-			ps.setTimestamp(3, c.getDiscontinued());
-			ps.setLong(4, c.getCompany_id());
-			results = ps.executeUpdate();
-		} catch (SQLException e) {
-			logger.error("creat : catch SQL Exception");
-			e.printStackTrace();
+	@Transactional
+	public void creat(Computer computer) {
+		try {
+			jdbcTemplate.update(INSERT_COMPUTER, computer.getName(), computer.getIntroduced(),
+					computer.getDiscontinued(), computer.getCompany_id());
+			logger.info("Inside creat computer method ...");
+		} catch (DataAccessException e) {
+			logger.error("Data Access Exception : fail to creat computer");
 		}
-		return results;
 
 	}
 
@@ -58,27 +56,19 @@ public class ComputerDAO {
 	 * @param id The Id of the Computer wanted
 	 * @return Computer Comes from Database
 	 */
-	public Computer getById(Long id) {
+	@Transactional
+	public Optional<Computer> getById(Long id) {
 
-		try (Connection conn = HikaricpConnection.getInstance().open()) {
-			PreparedStatement ps = conn.prepareStatement(SELECT_A_COMPUTER);
-			ps.setLong(1, id);
-			ResultSet rs = ps.executeQuery();
-			Computer c = new Computer();
-			if (rs.next()) {
-				c.setId(rs.getLong("id"));
-				c.setName(rs.getString("name"));
-				c.setIntroduced(rs.getTimestamp("introduced"));
-				c.setDiscontinued(rs.getTimestamp("discontinued"));
-				c.setCompany_id(rs.getLong("company_id"));
-			}
-			return c;
-		} catch (SQLException e) {
-			// System.out.println("getById : SQL Exception");
-			logger.error("getById : SQL Exception");
-			e.printStackTrace();
-			return new Computer();
+		Computer computer = new Computer();
+		try {
+			computer = (Computer) jdbcTemplate.queryForObject(SELECT_A_COMPUTER, new Object[] { id },
+					new BeanPropertyRowMapper<Computer>(Computer.class));
+			logger.info("Inside get computer by id method ...");
+		} catch (DataAccessException e) {
+			logger.error("Data Access Exception : fail to get a computer");
 		}
+
+		return Optional.ofNullable(computer);
 
 	}
 
@@ -87,23 +77,17 @@ public class ComputerDAO {
 	 * 
 	 * @return List<Computer> The list of all Computer
 	 */
+	@Transactional
 	public List<Computer> getList() {
+		List<Computer> computers = new ArrayList<Computer>();
+		try {
+			computers = jdbcTemplate.query(SELECT_COMPUTERS, new BeanPropertyRowMapper<Computer>(Computer.class));
+			logger.info("Inside get all Computer method ...");
 
-		List<Computer> listReturn = new ArrayList<Computer>();
-		try (Connection conn = HikaricpConnection.getInstance().open()) {
-			PreparedStatement ps = conn.prepareStatement(SELECT_COMPUTERS);
-			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
-				Computer c = new Computer(rs.getLong("id"), rs.getString("name"), rs.getTimestamp("introduced"),
-						rs.getTimestamp("discontinued"), rs.getLong("company_id"));
-				listReturn.add(c);
-			}
-		} catch (SQLException e) {
-
-			logger.error("getList : SQL Exception");
-			e.printStackTrace();
+		} catch (DataAccessException e) {
+			logger.error("Data Access Exception : fail to get all Computer");
 		}
-		return listReturn;
+		return computers;
 	}
 
 	/**
@@ -112,23 +96,15 @@ public class ComputerDAO {
 	 * @return either (1) the row count for SQL Data Manipulation Language (DML)
 	 *         statements or (2) 0 for SQL statements that return nothing
 	 */
-	public int update(Computer c) {
-		int results = 0;
-
-		try (Connection conn = HikaricpConnection.getInstance().open()) {
-			PreparedStatement ps = conn.prepareStatement(UPDATE_COMPUTER);
-			ps.setString(1, c.getName());
-			ps.setTimestamp(2, c.getIntroduced());
-			ps.setTimestamp(3, c.getDiscontinued());
-			ps.setLong(4, c.getCompany_id());
-			ps.setLong(5, c.getId());
-			results = ps.executeUpdate();
-		} catch (SQLException e) {
-
-			logger.error("update : catch SQL Exception");
-			e.printStackTrace();
+	@Transactional
+	public void update(Computer computer) {
+		try {
+			jdbcTemplate.update(UPDATE_COMPUTER, computer.getName(), computer.getIntroduced(),
+					computer.getDiscontinued(), computer.getCompany_id());
+			logger.info("Inside update computer method ...");
+		} catch (DataAccessException e) {
+			logger.error("Data Access Exception : fail to update computer");
 		}
-		return results;
 	}
 
 	/**
@@ -138,36 +114,18 @@ public class ComputerDAO {
 	 *         statements or (2) 0 for SQL statements that return nothing
 	 * @throws SQLException
 	 */
-	public int delete(Long id) throws SQLException {
+	@Transactional
+	public void delete(Long id) throws SQLException {
 
-		int results = 0;
-		Connection conn = HikaricpConnection.getInstance().open();
 		try {
-			conn.setAutoCommit(false);
-			PreparedStatement ps = conn.prepareStatement(DELETE_COMPUTER);
-			ps.setLong(1, id);
-			results = ps.executeUpdate();
-			
-		} catch (Exception e) {
-			try {
-				conn.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-				logger.error("delete : catch SQL Exception");
-			}
-			e.printStackTrace();
-		} finally {
-			try {
-				conn.commit();
-				conn.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			jdbcTemplate.update(DELETE_COMPUTER, id);
+			logger.info("Inside delete computer by computer id method ...");
+
+		} catch (DataAccessException e) {
+			logger.error("SQL Exception : fail to delete computer by computer id ");
 		}
-		return results;
+
 	}
-	
 
 	/**
 	 * This method delete a computer 1 or multiple computer
@@ -176,37 +134,21 @@ public class ComputerDAO {
 	 *         statements or (2) 0 for SQL statements that return nothing
 	 * @throws SQLException
 	 */
-	public int delete(List<Long> listeId) throws SQLException {
+	@Transactional
+	public void delete(List<Long> listeId) throws SQLException {
 
-		int results = 0;
-		Connection conn = HikaricpConnection.getInstance().open();
 		try {
-			conn.setAutoCommit(false);
 			for (Long id : listeId) {
-				PreparedStatement ps = conn.prepareStatement(DELETE_COMPUTER);
-				ps.setLong(1, id);
-				results += ps.executeUpdate();
+				jdbcTemplate.update(DELETE_COMPUTER, id);
 			}
+			logger.info("Inside delete List of computers method...");
 
-		} catch (Exception e) {
-			try {
-				conn.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-				logger.error("delete : catch SQL Exception");
-			}
-			e.printStackTrace();
-		} finally {
-			try {
-				conn.commit();
-				conn.close();
-			} catch (SQLException e) {
-				logger.error("delete : catch SQL Exception");
-				e.printStackTrace();
-			}
+		} catch (DataAccessException e) {
+			logger.error("SQL Exception : fail to delete List of computers");
 		}
-		return results;
+
 	}
+
 	/**
 	 * This method delete a computer
 	 * 
@@ -214,35 +156,20 @@ public class ComputerDAO {
 	 *         statements or (2) 0 for SQL statements that return nothing
 	 * @throws SQLException
 	 */
-	public int deleteComputerByCompanyId(Long companyId) throws SQLException {
+	@Transactional
+	public void deleteComputerByCompanyId(Long companyId) throws SQLException {
 
-		int results = 0;
-		Connection conn = HikaricpConnection.getInstance().open();
 		try {
-			conn.setAutoCommit(false);
-			PreparedStatement ps = conn.prepareStatement(DELETE_COMPUTERS_BY_COMPANY_ID);
-			ps.setLong(1, companyId);
-			results = ps.executeUpdate();
-			
-		} catch (Exception e) {
-			try {
-				conn.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-				logger.error("delete : catch SQL Exception");
-			}
-			e.printStackTrace();
-			
-		} finally {
-			try {
-				conn.commit();
-				conn.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			jdbcTemplate.update(DELETE_COMPUTERS_BY_COMPANY_ID, companyId);
+			logger.info("Inside delete computers by company id method ...");
+
+		} catch (DataAccessException e) {
+			logger.error("SQL Exception : fail to delete computers by id company id");
 		}
-		return results;
 	}
-	
+
+	public JdbcTemplate getJdbcTemplate() {
+		return jdbcTemplate;
+	}
+
 }

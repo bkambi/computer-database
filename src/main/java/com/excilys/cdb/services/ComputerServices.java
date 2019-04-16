@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import com.excilys.cdb.dao.ComputerDAO;
 import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.exception.DeleteDataException;
 import com.excilys.cdb.exception.InvalidDataComputerException;
+import com.excilys.cdb.exception.NoDataFoundException;
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
@@ -28,15 +30,15 @@ import com.excilys.cdb.util.enume.OrderBy;
 @Service
 public class ComputerServices {
  
+	private Logger logger = Logger.getLogger(ComputerDAO.class.getName());
+	
 	@Autowired
 	private  ComputerDAO daoComputer ;
 	@Autowired
 	private  CompanyDAO daoCompany ;
 	private  Page pageDashboard;
 	
-	public ComputerServices() {
-	}
- 
+	
 	/**
 	 * Return a Computer DTO if is not null : using Optional and the method of the
 	 * DAO
@@ -232,12 +234,15 @@ public class ComputerServices {
 		if (computerIdString != null) {
 			try {
 				Long computerID = Long.valueOf(computerIdString);
-				Computer computer = daoComputer.getById(computerID);
+				Computer computer = daoComputer.getById(computerID).orElseThrow(() -> new NoDataFoundException());
 				Optional<Company> optionalCompany = pageDashboard.getListeCompany().stream()
 						.filter(company -> company.getId() == computer.getCompany_id()).findFirst();
 				String nameCompnay = optionalCompany.isPresent() ? optionalCompany.get().getName() : "";
 				computerDto = ComputerMapper.mapDTO(computer, nameCompnay);
 			} catch (NumberFormatException e) {
+				logger.error("Number Format Exception : fail to parse string ("+computerIdString+") to Long");
+			}catch (NoDataFoundException e) {
+				logger.error("No Data Found Exception : fail to get computer with id = " +computerIdString);
 			}
 		}
 		return Optional.ofNullable(computerDto);
