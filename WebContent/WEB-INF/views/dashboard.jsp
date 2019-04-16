@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" import="com.excilys.cdb.dto.*"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,12 +9,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
-<link href="/static/css/bootstrap.min.css"
+
+<link href="static/css/bootstrap.min.css"
 	rel="stylesheet" media="screen">
-<link href="/static/css/font-awesome.css"
+<link href="static/css/font-awesome.css"
 	rel="stylesheet" media="screen">
-<link href="/static/css/main.css"
+<link href="static/css/main.css"
 	rel="stylesheet" media="screen">
+	
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
@@ -25,7 +28,7 @@
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${totalCount}Computersfound</h1>
+			<h1 id="homeTitle">${totalCount} Computersfound</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm"
@@ -193,9 +196,9 @@
 			</div>
 		</div>
 	</footer>
-	<script src="/static/js/jquery.min.js"></script>
-	<script src="/static/js/bootstrap.min.js"></script>
-	<script src="/static/js/dashboard.js"></script>
+	<script src="static/js/jquery.min.js"></script>
+	<script src="static/js/bootstrap.min.js"></script>
+	<script src="static/js/dashboard.js"></script>
 
 </body>
 </html>

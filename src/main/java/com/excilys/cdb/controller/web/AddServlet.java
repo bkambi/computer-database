@@ -20,7 +20,7 @@ import com.excilys.cdb.dao.CompanyDAO;
 /**
  * Servlet implementation class ComputerServlet
  */
-@WebServlet("/add-computer")
+
 public class AddServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	

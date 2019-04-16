@@ -23,7 +23,7 @@ import com.excilys.cdb.services.ComputerServices;
 /**
  * Servlet implementation class ComputerEditServlet
  */
-@WebServlet("/edit-computer")
+
 public class EditServlet extends HttpServlet {
 
 	Logger logger = LoggerFactory.getLogger(EditServlet.class);

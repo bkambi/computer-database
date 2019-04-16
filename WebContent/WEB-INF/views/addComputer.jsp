@@ -7,11 +7,11 @@
 <title>Computer Database</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
-<link href="<%=request.getContextPath()%>/static/css/bootstrap.min.css"
+<link href="static/css/bootstrap.min.css"
 	rel="stylesheet" media="screen">
-<link href="<%=request.getContextPath()%>/static/css/font-awesome.css"
+<link href="static/css/font-awesome.css"
 	rel="stylesheet" media="screen">
-<link href="<%=request.getContextPath()%>/static/css/main.css"
+<link href="static/css/main.css"
 	rel="stylesheet" media="screen">
 </head>
 <body>

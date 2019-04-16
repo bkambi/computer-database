@@ -18,7 +18,7 @@ import com.excilys.cdb.services.ComputerServices;
 /**
  * Servlet implementation class ComputerAddServlet
  */
-@WebServlet("/new-computer")
+
 public class ComputerAddServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
