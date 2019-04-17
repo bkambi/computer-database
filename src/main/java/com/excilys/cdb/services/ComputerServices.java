@@ -71,11 +71,11 @@ public class ComputerServices {
 	 * @throws InvalidDataComputerException
 	 */
 
-	public void handleRequestForAddComputer(HttpServletRequest request, HttpServletResponse response)
+	public void handleRequestForAddComputer(ComputerDTO computerDto)
 			throws InvalidDataComputerException {
 
 		Computer computer;
-		Optional<Computer> optionalComputer = ComputerMapper.mapViewDtoToComputer(request);
+		Optional<Computer> optionalComputer = ComputerMapper.mapViewDtoToComputer(computerDto);
 		computer = optionalComputer.isPresent() ? optionalComputer.get() : new Computer();
 		if (isValidatedByTheBack(computer)) {
 			daoComputer.creat(computer);
@@ -90,10 +90,10 @@ public class ComputerServices {
 	 * @throws InvalidDataComputerException
 	 */
 
-	public  void handleRequestForUpdateComputer(HttpServletRequest request, HttpServletResponse response)
+	public  void handleRequestForUpdateComputer(ComputerDTO computerDto)
 			throws InvalidDataComputerException {
 		Computer computer;
-		Optional<Computer> optionalComputer = ComputerMapper.mapViewDtoToComputer(request);
+		Optional<Computer> optionalComputer = ComputerMapper.mapViewDtoToComputer(computerDto);
 		computer = optionalComputer.isPresent() ? optionalComputer.get() : new Computer();
 		if (isValidatedByTheBack(computer)) {
 			daoComputer.update(computer);
@@ -226,25 +226,19 @@ public class ComputerServices {
 		}
 	}
 
-	public  Optional<ComputerDTO> getComputerDTO(HttpServletRequest req) {
+	public  Optional<ComputerDTO> getComputerDTO(Long computerID) {
 
 		ComputerDTO computerDto = null;
-
-		String computerIdString = req.getParameter("computer");
-		if (computerIdString != null) {
 			try {
-				Long computerID = Long.valueOf(computerIdString);
 				Computer computer = daoComputer.getById(computerID).orElseThrow(() -> new NoDataFoundException());
 				Optional<Company> optionalCompany = pageDashboard.getListeCompany().stream()
 						.filter(company -> company.getId() == computer.getCompany_id()).findFirst();
 				String nameCompnay = optionalCompany.isPresent() ? optionalCompany.get().getName() : "";
 				computerDto = ComputerMapper.mapDTO(computer, nameCompnay);
-			} catch (NumberFormatException e) {
-				logger.error("Number Format Exception : fail to parse string ("+computerIdString+") to Long");
 			}catch (NoDataFoundException e) {
-				logger.error("No Data Found Exception : fail to get computer with id = " +computerIdString);
+				logger.error("No Data Found Exception : fail to get computer with id = " +computerID);
 			}
-		}
+		
 		return Optional.ofNullable(computerDto);
 
 	}

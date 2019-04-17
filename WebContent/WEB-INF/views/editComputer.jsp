@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,44 +29,48 @@
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
 					<div class="label label-default pull-right">id:
-						${computer.id}</div>
+						${editComputerForm.id}</div>
 					<h1>Edit Computer</h1>
 
-					<form id="formEdit" action="<%=request.getContextPath()%>/editComputer" method="POST">
-						<input type="hidden" value="0" id="id" />
+
+			<form:form id="formEdit" action="editComputer" method="POST"
+						modelAttribute="editComputerForm">
 						<fieldset>
+						<form:input path="id" type="hidden" value="${editComputerForm.id}" id="id" />
 							<div class="form-group">
-								<label for="computerName">Computer name</label> <input
-									type="text" class="form-control" id="computerName" name="computerName"
-									placeholder ="${computer.name}" value="${computer.name}" data-validation="alphanumeric" data-validation-ignore=" ,&,.,-,/,+,:" >
+								<form:label path="name" for="computerName">Computer name</form:label>
+								<form:input path="name" name="computerName" type="text"
+									class="form-control" id="computerName"
+									placeholder ="${editComputerForm.name}" value="${editComputerForm.name}" data-validation="alphanumeric" data-validation-ignore=" ,&,.,-,/,+,:" />
 							</div>
 							<div class="form-group">
-								<label for="introduced">Introduced date</label> <input
-									type="date" class="form-control" id="introduced" name="introduced"
-									value="${computer.introduced}" data-validation="date">
+								<form:label path="introduced" for="introduced">Introduced date</form:label>
+								<form:input path="introduced" type="date" class="form-control"
+									name="introduced" id="introduced" value="${editComputerForm.introduced}" data-validation="date"/>
 							</div>
 							<div class="form-group">
-								<label for="discontinued">Discontinued date</label> <input
-									type="date" class="form-control" id="discontinued"
-									value="${computer.discontinued}" data-validation="date" name="discontinued">
+								<form:label path="discontinued" for="discontinued">Discontinued date</form:label>
+								<form:input path="discontinued" type="date" class="form-control"
+									name="discontinued" id="discontinued"
+									value="${editComputerForm.discontinued}" data-validation="date" />
 							</div>
 							<div class="form-group">
-								<label for="companyId">Company</label> <select
-									class="form-control" id="companyId" data-validation="number" 
-									data-validation-error-msg="Choix d'entreprise invalide" name ="companyId">
-									<option  value="inconnue" selected="selected" > Choose company</option>
-									<c:forEach items="${listeCompany}" var="company">
-										<option value="${company.id}"
-											${computer.company == company.name ? 'selected' : ''}>${company.name}</option>
-									</c:forEach>
-								</select>
+								<form:label path="company" for="companyId">Company</form:label>
+								<form:select path="company" class="form-control" id="companyId"
+									name="companyId"  >
+									<form:option value="${computerDtoId}" >${editComputerForm.company}</form:option>
+									<form:option value="-1" label="-- Select a company -- "/>
+									<form:options items="${listeCompany}" />
+									</form:select>
 							</div>
 						</fieldset>
 						<div class="actions pull-right">
-							<input type="submit" value="Edit" class="btn btn-primary">
-							or <a href="dashboard.html" class="btn btn-default">Cancel</a>
+							<input id="btnSubmit" type="submit" value="Add"
+								class="btn btn-primary"> or <a
+								href="<%=request.getContextPath()%>/dashboard"
+								class="btn btn-default">Cancel</a>
 						</div>
-					</form>
+					</form:form>
 				</div>
 			</div>
 		</div>

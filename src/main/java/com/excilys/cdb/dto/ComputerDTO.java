@@ -16,6 +16,14 @@ public class ComputerDTO {
 		this.discontinued = discontinued;
 		this.company = company;
 	}
+	public ComputerDTO() {
+		super();
+		this.id =-1L;
+		this.name = "";
+		this.introduced = "";
+		this.discontinued = "";
+		this.company = "";
+	}
 	public long getId() {
 		return id;
 	}
@@ -83,6 +91,12 @@ public class ComputerDTO {
 		}	
 	}
 
+	@Override
+	public String toString() {
+		return "ComputerDTO [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued="
+				+ discontinued + ", company=" + company + "]";
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

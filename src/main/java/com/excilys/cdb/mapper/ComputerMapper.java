@@ -33,12 +33,12 @@ public class ComputerMapper {
 
 	}
 	
-	public static Optional<Computer> mapViewDtoToComputer(HttpServletRequest request) {
+	public static Optional<Computer> mapViewDtoToComputer(ComputerDTO computerDto) {
 		
-		String computerName = request.getParameter("computerName");
-		String introduced = request.getParameter("introduced");
-		String discontinued = request.getParameter("discontinued");
-		String companyId = request.getParameter("companyId");
+		String computerName = computerDto.getName();
+		String introduced = computerDto.getIntroduced();
+		String discontinued =computerDto.getDiscontinued();
+		String companyId = computerDto.getCompany();
 
 		Computer computer = new Computer();
 
