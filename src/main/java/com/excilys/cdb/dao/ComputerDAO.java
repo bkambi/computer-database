@@ -23,7 +23,7 @@ public class ComputerDAO {
 	private final static String INSERT_COMPUTER = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUE(?,?,?,?)";
 	private final static String SELECT_A_COMPUTER = "SELECT id,name,introduced,discontinued,company_id FROM computer WHERE id = ?";
 	private final static String SELECT_COMPUTERS = "SELECT id,name,introduced,discontinued,company_id FROM computer";
-	private final static String UPDATE_COMPUTER = "UPDATE computer SET name = ? , introduced =?,discontinued=?,company_id=?  WHERE id = ?";
+	private final static String UPDATE_COMPUTER = "UPDATE computer SET name = ? , introduced = ? , discontinued = ? , company_id = ?  WHERE id = ?";
 	private final static String DELETE_COMPUTER = "DELETE FROM computer WHERE id = ?";
 	private final static String DELETE_COMPUTERS_BY_COMPANY_ID = "DELETE FROM computer WHERE company_id=?";
 
@@ -100,7 +100,7 @@ public class ComputerDAO {
 	public void update(Computer computer) {
 		try {
 			jdbcTemplate.update(UPDATE_COMPUTER, computer.getName(), computer.getIntroduced(),
-					computer.getDiscontinued(), computer.getCompany_id());
+					computer.getDiscontinued(), computer.getCompany_id(),computer.getId());
 			logger.info("Inside update computer method ...");
 		} catch (DataAccessException e) {
 			logger.error("Data Access Exception : fail to update computer");

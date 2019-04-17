@@ -1,11 +1,21 @@
 package com.excilys.cdb.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class ComputerDTO {
 	
+	@NotNull(message = "id cannot be null")
 	private long id ;
+	@NotNull(message = "Name cannot be null")
+	@Size(min = 3, message 
+    = "Name must be bigger than 3 characters")
 	private String name ;
+	@NotNull(message = "Introduced cannot be null")
 	private String introduced ;
+	@NotNull(message = "Discontinued cannot be null")
 	private String discontinued;
+	@NotNull(message = "Company cannot be null")
 	private String company ;
 	
 	public ComputerDTO(long id, String name, String introduced, String discontinued, String company) {

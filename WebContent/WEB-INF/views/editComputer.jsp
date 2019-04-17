@@ -58,7 +58,7 @@
 								<form:label path="company" for="companyId">Company</form:label>
 								<form:select path="company" class="form-control" id="companyId"
 									name="companyId"  >
-									<form:option value="${computerDtoId}" >${editComputerForm.company}</form:option>
+									<form:option value="${computerDtoId}" label="${editComputerForm.company}"/>
 									<form:option value="-1" label="-- Select a company -- "/>
 									<form:options items="${listeCompany}" />
 									</form:select>

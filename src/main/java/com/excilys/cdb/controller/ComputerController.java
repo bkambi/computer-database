@@ -24,6 +24,7 @@ import com.excilys.cdb.exception.DeleteDataException;
 import com.excilys.cdb.exception.InvalidDataComputerException;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.services.ComputerServices;
+import com.excilys.cdb.validator.ComputerValidator;
 
 @Controller
 public class ComputerController {
@@ -53,10 +54,11 @@ public class ComputerController {
 		String redirect = "";
 		logger.info("inside addComputer method ");
 		try {
+			new ComputerValidator(computerDto,logger);
 			computerServices.handleRequestForAddComputer(computerDto);
 			logger.info(" success to add computer");
 			redirect = "redirect:/dashboard";
-		} catch (InvalidDataComputerException e) {
+		} catch ( InvalidDataComputerException e) {
 			logger.error("fail to add computer");
 			e.printStackTrace();
 			redirect = "redirect:/add-computer";
@@ -93,6 +95,7 @@ public class ComputerController {
 		logger.info("inside addComputer editComputer ");
 		String redirect = "";
 		try {
+			new ComputerValidator(computerDto,logger);
 			computerServices.handleRequestForUpdateComputer(computerDto);
 			logger.info(" success to edit computer");
 			redirect = "redirect:/dashboard";
