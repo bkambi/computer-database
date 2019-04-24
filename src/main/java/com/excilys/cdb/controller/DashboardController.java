@@ -26,16 +26,19 @@ public class DashboardController {
 	private ComputerServices computerServices;
 
 	@RequestMapping(value = { "/" ,"/dashboard"}, method = RequestMethod.GET)
-	public String getDashboardPage(@RequestParam(value = "orderBy", required = false) String orderBy,
-			@RequestParam(value = "reversed", required = false) String reversed,Model model,HttpServletRequest request, HttpServletResponse response) {
+	public String getDashboardPage(
+			@RequestParam(value = "orderBy", required = false) String orderBy,
+			@RequestParam(value = "reversed", required = false) String reversed,
+			@RequestParam(value = "search", required = false) String search,
+			@RequestParam(value = "numberOfCompute", required = false) String numberOfCompute,
+			@RequestParam(value = "arrayIndice", required = false) String arrayIndice,
+			@RequestParam(value = "indice", required = false) String indice,
+			Model model,HttpServletRequest request, HttpServletResponse response) {
 
 		logger.info(" inside DashboardController : getDashboardPage() method");
 		List<ComputerDTO> listeComputerDto = computerServices.getListComputerToShowService(request);
 		List<String> listIndice = computerServices.getListIndice(request);
 		String totalComputer = computerServices.getTotalComputer();
-
-		if (request.getParameter("orderBy") != null && request.getParameter("reversed") != null)
-			listeComputerDto = computerServices.getOrderListComputer(request, listeComputerDto);
 		
 		model.addAttribute("listeComputer", listeComputerDto);
 		model.addAttribute("listIndice", listIndice);

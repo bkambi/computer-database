@@ -29,16 +29,15 @@ import com.excilys.cdb.util.enume.OrderBy;
 
 @Service
 public class ComputerServices {
- 
+
 	private Logger logger = Logger.getLogger(ComputerDAO.class.getName());
-	
+
 	@Autowired
-	private  ComputerDAO daoComputer ;
+	private ComputerDAO daoComputer;
 	@Autowired
-	private  CompanyDAO daoCompany ;
-	private  Page pageDashboard;
-	
-	
+	private CompanyDAO daoCompany;
+	private Page pageDashboard;
+
 	/**
 	 * Return a Computer DTO if is not null : using Optional and the method of the
 	 * DAO
@@ -48,8 +47,8 @@ public class ComputerServices {
 	public List<ComputerDTO> getListComputerToShowService(HttpServletRequest req) {
 
 		pageDashboardInit(req);
-		
-		List<Computer> listComputer= pageDashboard.getListeComputerToShow();
+
+		List<Computer> listComputer = pageDashboard.getListeComputerToShow();
 		List<ComputerDTO> listComputerDTO = new ArrayList<ComputerDTO>();
 		List<Company> listCompany = pageDashboard.getListeCompany();
 
@@ -59,11 +58,10 @@ public class ComputerServices {
 			String nameCompnay = optionalCompany.isPresent() ? optionalCompany.get().getName() : "";
 			listComputerDTO.add(ComputerMapper.mapDTO(computer, nameCompnay));
 		}
-		
+
 		return listComputerDTO;
 
 	}
-
 
 	/**
 	 * Add a Computer in the data base using the method of the DAO
@@ -71,8 +69,7 @@ public class ComputerServices {
 	 * @throws InvalidDataComputerException
 	 */
 
-	public void handleRequestForAddComputer(ComputerDTO computerDto)
-			throws InvalidDataComputerException {
+	public void handleRequestForAddComputer(ComputerDTO computerDto) throws InvalidDataComputerException {
 
 		Computer computer;
 		Optional<Computer> optionalComputer = ComputerMapper.mapViewDtoToComputer(computerDto);
@@ -90,8 +87,7 @@ public class ComputerServices {
 	 * @throws InvalidDataComputerException
 	 */
 
-	public  void handleRequestForUpdateComputer(ComputerDTO computerDto)
-			throws InvalidDataComputerException {
+	public void handleRequestForUpdateComputer(ComputerDTO computerDto) throws InvalidDataComputerException {
 		Computer computer;
 		Optional<Computer> optionalComputer = ComputerMapper.mapViewDtoToComputer(computerDto);
 		computer = optionalComputer.isPresent() ? optionalComputer.get() : new Computer();
@@ -108,7 +104,7 @@ public class ComputerServices {
 	 * @throws InvalidDataComputerException
 	 */
 
-	public  void handleRequestForDeleteComputer(HttpServletRequest request, HttpServletResponse response)
+	public void handleRequestForDeleteComputer(HttpServletRequest request, HttpServletResponse response)
 			throws DeleteDataException {
 		String[] args = request.getParameter("selection").split(",");
 		List<Long> listeComputerToDelete = new ArrayList<Long>();
@@ -145,7 +141,7 @@ public class ComputerServices {
 	 * 
 	 * @return
 	 */
-	public  List<String> getListIndice(HttpServletRequest req) {
+	public List<String> getListIndice(HttpServletRequest req) {
 		HttpSession session = req.getSession();
 		List<String> listIndiceRetour = new ArrayList<String>();
 		pageDashboard = (Page) session.getAttribute("pageDashboard");
@@ -170,17 +166,17 @@ public class ComputerServices {
 	 * 
 	 * @param req
 	 */
-	public  void pageDashboardInit(HttpServletRequest req) {
+	public void pageDashboardInit(HttpServletRequest req) {
 		HttpSession session = req.getSession();
-		
+
 		String indiceString = (String) req.getParameter("indice");
 		String numberOfComputerString = (String) req.getParameter("numberOfComputer");
 		String arrayIndice = (String) req.getParameter("arrayIndice");
 		String searchParam = req.getParameter("search");
-		
+
 		int indice = 0;
 		int numberOfComputer = 10;
- 
+
 		if (session.getAttribute("pageDashboard") == null) {
 			pageDashboard = new Page();
 			pageDashboard.setListeComputer(daoComputer.getList());
@@ -191,6 +187,7 @@ public class ComputerServices {
 			session.setAttribute("pageDashboard", pageDashboard);
 		} else {
 			pageDashboard = (Page) session.getAttribute("pageDashboard");
+			pageDashboard.setListeCompany(daoCompany.getList());
 			try {
 				int maxRang = pageDashboard.getListeComputer().size() / pageDashboard.getNumberOfComputer();
 				int minRang = 0;
@@ -206,19 +203,27 @@ public class ComputerServices {
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			}
+
 			if (searchParam != null) {
 				List<Computer> listComputer = getFilterAllListComputer(searchParam);
 				pageDashboard.setListeComputer(listComputer);
 				session.setAttribute("pageDashboard", pageDashboard);
-			}else {
+			}
+			if (req.getParameter("orderBy") != null & req.getParameter("reversed") != null) {
+
+				List<Computer> listComputer = this.getOrderListComputer(req.getParameter("orderBy"),
+						req.getParameter("reversed"), pageDashboard.getListeComputer());
+				pageDashboard.setListeComputer(listComputer);
+			}
+			if (searchParam == null & req.getParameter("orderBy") == null & req.getParameter("reversed") == null) {
 				pageDashboard.setListeComputer(daoComputer.getList());
 			}
-			pageDashboard.setListeCompany(daoCompany.getList());
+			
 			if (numberOfComputerString != null) {
-				pageDashboard.setIndice(0);
-			} else if (indiceString != null) {
+				pageDashboard.setNumberOfComputer(numberOfComputer);
+			} if (indiceString != null) {
 				pageDashboard.setIndice(indice);
-			} else if (arrayIndice != null) {
+			} if (arrayIndice != null) {
 				pageDashboard.setIndice(indice);
 			}
 			pageDashboard.updateListComputerWithNewNumberOfComputer(numberOfComputer);
@@ -226,24 +231,24 @@ public class ComputerServices {
 		}
 	}
 
-	public  Optional<ComputerDTO> getComputerDTO(Long computerID) {
+	public Optional<ComputerDTO> getComputerDTO(Long computerID) {
 
 		ComputerDTO computerDto = null;
-			try {
-				Computer computer = daoComputer.getById(computerID).orElseThrow(() -> new NoDataFoundException());
-				Optional<Company> optionalCompany = pageDashboard.getListeCompany().stream()
-						.filter(company -> company.getId() == computer.getCompany_id()).findFirst();
-				String nameCompnay = optionalCompany.isPresent() ? optionalCompany.get().getName() : "";
-				computerDto = ComputerMapper.mapDTO(computer, nameCompnay);
-			}catch (NoDataFoundException e) {
-				logger.error("No Data Found Exception : fail to get computer with id = " +computerID);
-			}
-		
+		try {
+			Computer computer = daoComputer.getById(computerID).orElseThrow(() -> new NoDataFoundException());
+			Optional<Company> optionalCompany = pageDashboard.getListeCompany().stream()
+					.filter(company -> company.getId() == computer.getCompany_id()).findFirst();
+			String nameCompnay = optionalCompany.isPresent() ? optionalCompany.get().getName() : "";
+			computerDto = ComputerMapper.mapDTO(computer, nameCompnay);
+		} catch (NoDataFoundException e) {
+			logger.error("No Data Found Exception : fail to get computer with id = " + computerID);
+		}
+
 		return Optional.ofNullable(computerDto);
 
 	}
 
-	public  String getTotalComputer() {
+	public String getTotalComputer() {
 		return String.valueOf(pageDashboard.getListeComputer().size());
 
 	}
@@ -255,81 +260,73 @@ public class ComputerServices {
 	 * @param listComputer
 	 * @return
 	 */
-	public  List<Computer> getFilterAllListComputer(String searchParam ) {
-
+	public List<Computer> getFilterAllListComputer(String searchParam) {
 
 		List<Computer> listAllComputer = daoComputer.getList();
-		List<Computer> allListFilter = new ArrayList<Computer>();
+		List<Computer> listAllFilter = new ArrayList<Computer>();
 
 		List<Company> listCompany = pageDashboard.getListeCompany();
 
-		List<ComputerDTO> filterList = new ArrayList<ComputerDTO>();
+		List<ComputerDTO> listFilter = new ArrayList<ComputerDTO>();
 		List<ComputerDTO> listAllComputerDto = new ArrayList<ComputerDTO>();
 
-		
-		for (Computer computer : listAllComputer) {
-			Optional<Company> optionalCompany = listCompany.stream()
-					.filter(company -> company.getId() == computer.getCompany_id()).findFirst();
-			String nameCompnay = optionalCompany.isPresent() ? optionalCompany.get().getName() : "";
-			listAllComputerDto.add(ComputerMapper.mapDTO(computer, nameCompnay));
-		}
+		listAllComputerDto = ComputerMapper.mapListDTO(listAllComputer, listCompany).get();
 
 		if (searchParam != null) {
-			filterList = listAllComputerDto.stream()
+			listFilter = listAllComputerDto.stream()
 					.filter(computerDto -> computerDto.getName().matches("(?i).*" + searchParam + ".*")
 							| computerDto.getCompany().matches("(?i).*" + searchParam + ".*"))
 					.collect(Collectors.toList());
 
 		}
+		listAllFilter = ComputerMapper.mapList(listFilter, listAllComputer).get();
 
-		for (ComputerDTO computerDtofilter : filterList) {
-			Optional<Computer> optionalComputer = listAllComputer.stream()
-					.filter(computer -> computer.getId() == computerDtofilter.getId()).findFirst();
-			if (optionalComputer.isPresent()) {
-				allListFilter.add(optionalComputer.get());
-			}
-		}
-
-		return allListFilter;
+		return listAllFilter;
 	}
 
+	public List<Computer> getOrderListComputer(String orderByParam, String reverseParam, List<Computer> listComputer) {
 
-	public  List<ComputerDTO> getOrderListComputer(HttpServletRequest req, List<ComputerDTO> listComputer) {
-
-		String orderByPram = req.getParameter("orderBy");
-		String reverseParam = req.getParameter("reversed");
-		int value = Integer.valueOf(orderByPram);
+		int value = Integer.valueOf(orderByParam);
+		List<Computer> filtListFinal = new ArrayList<Computer>();
 		List<ComputerDTO> filtList = new ArrayList<ComputerDTO>();
+		List<Company> listCompany = pageDashboard.getListeCompany();
+		List<ComputerDTO> listAllComputerDto = new ArrayList<ComputerDTO>();
+
+		listAllComputerDto = ComputerMapper.mapListDTO(listComputer, listCompany).get();
+
 		switch (OrderBy.values()[value - 1]) {
 		case COMPUTER_NAME:
 			filtList = "0".equals(reverseParam)
-					? listComputer.stream().sorted(Comparator.comparing(ComputerDTO::getName))
+					? listAllComputerDto.stream().sorted(Comparator.comparing(ComputerDTO::getName))
 							.collect(Collectors.toList())
-					: listComputer.stream().sorted(Comparator.comparing(ComputerDTO::getName).reversed())
+					: listAllComputerDto.stream().sorted(Comparator.comparing(ComputerDTO::getName).reversed())
 							.collect(Collectors.toList());
 			break;
 		case COMPUTER_INTRODUCED:
 			filtList = "0".equals(reverseParam)
-					? listComputer.stream().sorted(Comparator.comparing(ComputerDTO::getIntroduced))
+					? listAllComputerDto.stream().sorted(Comparator.comparing(ComputerDTO::getIntroduced))
 							.collect(Collectors.toList())
-					: listComputer.stream().sorted(Comparator.comparing(ComputerDTO::getIntroduced).reversed())
+					: listAllComputerDto.stream().sorted(Comparator.comparing(ComputerDTO::getIntroduced).reversed())
 							.collect(Collectors.toList());
 			break;
 		case COMPUTER_DISCONTINUED:
 			filtList = "0".equals(reverseParam)
-					? listComputer.stream().sorted(Comparator.comparing(ComputerDTO::getDiscontinued))
+					? listAllComputerDto.stream().sorted(Comparator.comparing(ComputerDTO::getDiscontinued))
 							.collect(Collectors.toList())
-					: listComputer.stream().sorted(Comparator.comparing(ComputerDTO::getDiscontinued).reversed())
+					: listAllComputerDto.stream().sorted(Comparator.comparing(ComputerDTO::getDiscontinued).reversed())
 							.collect(Collectors.toList());
 			break;
 		case COMPUTER_COMPANY:
 			filtList = "0".equals(reverseParam)
-					? listComputer.stream().sorted(Comparator.comparing(ComputerDTO::getCompany))
+					? listAllComputerDto.stream().sorted(Comparator.comparing(ComputerDTO::getCompany))
 							.collect(Collectors.toList())
-					: listComputer.stream().sorted(Comparator.comparing(ComputerDTO::getCompany).reversed())
+					: listAllComputerDto.stream().sorted(Comparator.comparing(ComputerDTO::getCompany).reversed())
 							.collect(Collectors.toList());
 			break;
 		}
-		return filtList;
+
+		filtListFinal = ComputerMapper.mapList(filtList, listComputer).get();
+
+		return filtListFinal;
 	}
 }

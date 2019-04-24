@@ -1,34 +1,38 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" import="com.excilys.cdb.dto.*"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <!DOCTYPE html>
 <html>
 <head>
-<title>Computer Database</title>
+<title><spring:message code="label.title" /></title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
 
-<link href="static/css/bootstrap.min.css"
-	rel="stylesheet" media="screen">
-<link href="static/css/font-awesome.css"
-	rel="stylesheet" media="screen">
-<link href="static/css/main.css"
-	rel="stylesheet" media="screen">
-	
+<link href="static/css/bootstrap.min.css" rel="stylesheet"
+	media="screen">
+<link href="static/css/font-awesome.css" rel="stylesheet" media="screen">
+<link href="static/css/main.css" rel="stylesheet" media="screen">
+
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="dashboard.html"> Application -
-				Computer Database </a>
+			<a class="navbar-brand" href="<%=request.getContextPath()%>/dashboard"><spring:message
+					code="label.header" /></a>
+		</div>
+		<div class="container">
+			<a href="?lang=fr">fr</a> <a href="?lang=en">en</a>
 		</div>
 	</header>
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${totalCount} Computersfound</h1>
+			<h1 id="homeTitle">${totalCount}
+				<spring:message code="label.home.subtitle" />
+			</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm"
@@ -42,9 +46,10 @@
 				</div>
 				<div class="pull-right">
 					<a class="btn btn-success" id="addComputer"
-						href="<%=request.getContextPath()%>/add-computer">Add Computer</a>
-					<a class="btn btn-default" id="editComputer" href="#"
-						onclick="$.fn.toggleEditMode();">Edit</a>
+						href="<%=request.getContextPath()%>/add-computer"><spring:message
+							code="label.home.btn.add" /></a> <a class="btn btn-default"
+						id="editComputer" href="#" onclick="$.fn.toggleEditMode();"><spring:message
+							code="label.home.btn.edit" /></a>
 				</div>
 			</div>
 		</div>
@@ -68,7 +73,7 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th>Computer name <a
+						<th><spring:message code="label.name" /><a
 							href="?<%=request.getParameter("search") == null ? "" : "search=" + request.getParameter("search") + "&"%>
 						<%=request.getParameter("numberOfComputer") == null ? ""
 					: "numberOfComputer=" + request.getParameter("numberOfComputer") + "&"%>
@@ -78,9 +83,8 @@
 							<%=request.getParameter("numberOfComputer") == null ? ""
 					: "numberOfComputer=" + request.getParameter("numberOfComputer") + "&"%>
 							orderBy=1&reversed=1"><span
-								class="glyphicon glyphicon-chevron-down"></span></a>
-						</th>
-						<th>Introduced date <a
+								class="glyphicon glyphicon-chevron-down"></span></a></th>
+						<th><spring:message code="label.introduced" /><a
 							href="?<%=request.getParameter("search") == null ? "" : "search=" + request.getParameter("search") + "&"%>
 						<%=request.getParameter("numberOfComputer") == null ? ""
 					: "numberOfComputer=" + request.getParameter("numberOfComputer") + "&"%>
@@ -91,10 +95,9 @@
 							<%=request.getParameter("numberOfComputer") == null ? ""
 					: "numberOfComputer=" + request.getParameter("numberOfComputer") + "&"%>
 							orderBy=2&reversed=1"><span
-								class="glyphicon glyphicon-chevron-down"></span></a>
-						</th>
+								class="glyphicon glyphicon-chevron-down"></span></a></th>
 						<!-- Table header for Discontinued Date -->
-						<th>Discontinued date <a
+						<th><spring:message code="label.discontinued" /><a
 							href="?<%=request.getParameter("search") == null ? "" : "search=" + request.getParameter("search") + "&"%>
 						<%=request.getParameter("numberOfComputer") == null ? ""
 					: "numberOfComputer=" + request.getParameter("numberOfComputer") + "&"%>
@@ -105,10 +108,9 @@
 							<%=request.getParameter("numberOfComputer") == null ? ""
 					: "numberOfComputer=" + request.getParameter("numberOfComputer") + "&"%>
 							orderBy=3&reversed=1"><span
-								class="glyphicon glyphicon-chevron-down"></span></a>
-						</th>
+								class="glyphicon glyphicon-chevron-down"></span></a></th>
 						<!-- Table header for Company -->
-						<th>Company <a
+						<th><spring:message code="label.company" /><a
 							href="?<%=request.getParameter("search") == null ? "" : "search=" + request.getParameter("search") + "&"%>
 						<%=request.getParameter("numberOfComputer") == null ? ""
 					: "numberOfComputer=" + request.getParameter("numberOfComputer") + "&"%>
@@ -119,8 +121,7 @@
 							<%=request.getParameter("numberOfComputer") == null ? ""
 					: "numberOfComputer=" + request.getParameter("numberOfComputer") + "&"%>
 							orderBy=4&reversed=1"><span
-								class="glyphicon glyphicon-chevron-down"></span></a>
-						</th>
+								class="glyphicon glyphicon-chevron-down"></span></a></th>
 
 					</tr>
 				</thead>
