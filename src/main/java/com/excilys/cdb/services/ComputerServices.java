@@ -25,6 +25,7 @@ import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Page;
+import com.excilys.cdb.repositories.CompanyRepository;
 import com.excilys.cdb.util.enume.OrderBy;
 
 @Service
@@ -32,6 +33,9 @@ public class ComputerServices {
 
 	private Logger logger = Logger.getLogger(ComputerDAO.class.getName());
 
+	@Autowired
+	CompanyRepository companyRepository ;
+	
 	@Autowired
 	private ComputerDAO daoComputer;
 	@Autowired
@@ -46,6 +50,7 @@ public class ComputerServices {
 	 */
 	public List<ComputerDTO> getListComputerToShowService(HttpServletRequest req) {
 
+		System.out.println(companyRepository.findAll());
 		pageDashboardInit(req);
 
 		List<Computer> listComputer = pageDashboard.getListeComputerToShow();
