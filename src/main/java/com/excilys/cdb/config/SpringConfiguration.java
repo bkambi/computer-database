@@ -96,19 +96,7 @@ public class SpringConfiguration implements WebMvcConfigurer {
 		HikariDataSource dataSource = new HikariDataSource( config );
 		return dataSource ; 
 	}
-	
-	
-//	@Bean
-//	public DataSource dataSource(){
-//		logger.info("Inside DataSource initializer ...");
-//	    DriverManagerDataSource dataSource = new DriverManagerDataSource();
-//	    dataSource.setDriverClassName(env.getRequiredProperty("spring.datasource.className"));
-//	    dataSource.setUrl(env.getRequiredProperty("spring.datasource.url"));
-//	    dataSource.setUsername(env.getRequiredProperty("spring.datasource.username") );
-//	    dataSource.setPassword(env.getRequiredProperty("spring.datasource.password"));
-//	    return dataSource;
-//	}
-	
+		
 	@Bean
 	public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
 		logger.info("Inside PlatformTransactionManager initializer ...");

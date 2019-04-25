@@ -41,7 +41,7 @@ public class ComputerDAO {
 	public void creat(Computer computer) {
 		try {
 			jdbcTemplate.update(INSERT_COMPUTER, computer.getName(), computer.getIntroduced(),
-					computer.getDiscontinued(), computer.getCompany_id());
+					computer.getDiscontinued(), computer.getCompanyId());
 			logger.info("Inside creat computer method ...");
 		} catch (DataAccessException e) {
 			logger.error("Data Access Exception : fail to creat computer");
@@ -100,7 +100,7 @@ public class ComputerDAO {
 	public void update(Computer computer) {
 		try {
 			jdbcTemplate.update(UPDATE_COMPUTER, computer.getName(), computer.getIntroduced(),
-					computer.getDiscontinued(), computer.getCompany_id(),computer.getId());
+					computer.getDiscontinued(), computer.getCompanyId(),computer.getId());
 			logger.info("Inside update computer method ...");
 		} catch (DataAccessException e) {
 			logger.error("Data Access Exception : fail to update computer");

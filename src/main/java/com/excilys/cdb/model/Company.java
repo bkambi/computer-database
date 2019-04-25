@@ -3,6 +3,7 @@ package com.excilys.cdb.model;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +21,7 @@ private Long id;
 @Column(name = "name")private 
 String name;
 
-@OneToMany(mappedBy = "company")
+@OneToMany(mappedBy = "company",orphanRemoval=true,cascade = CascadeType.ALL)
 private Set<Computer> computers;
 
 	public Company() {

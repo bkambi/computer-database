@@ -49,7 +49,7 @@ public class ComputerMapper {
 
 		try {
 			companyID = Long.parseLong(companyId);
-			computer.setCompany_id(companyID);
+			computer.setCompanyId(companyID);
 			logger.info("Inside the method for mapping View Dto To Computer ...");
 		} catch (NumberFormatException numberFormatException) {
 			numberFormatException.printStackTrace();
@@ -62,7 +62,7 @@ public class ComputerMapper {
 		List<ComputerDTO> listAllComputerDto = new ArrayList<ComputerDTO>();
 		for (Computer computer : listComputer) {
 			Optional<Company> optionalCompany = listCompany.stream()
-					.filter(company -> company.getId() == computer.getCompany_id()).findFirst();
+					.filter(company -> company.getId() == computer.getCompanyId()).findFirst();
 			String nameCompnay = optionalCompany.isPresent() ? optionalCompany.get().getName() : "";
 			listAllComputerDto.add(ComputerMapper.mapDTO(computer, nameCompnay));
 		}

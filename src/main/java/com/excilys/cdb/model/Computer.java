@@ -2,6 +2,7 @@ package com.excilys.cdb.model;
 
 import java.sql.Timestamp;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,7 +25,7 @@ public class Computer {
 	@Column(name = "discontinued")
 	private Timestamp discontinued;
 	@Column(name = "company_id")
-	private Long company_id ;
+	private Long companyId ;
 	
 	@ManyToOne
 	@JoinColumn(name = "company_id",referencedColumnName="id",insertable = false, updatable = false)
@@ -34,20 +35,20 @@ public class Computer {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Computer(String name, Timestamp introduced,Timestamp discontinued, Long company_id) {
+	public Computer(String name, Timestamp introduced,Timestamp discontinued, Long companyId) {
 		super();
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
-		this.company_id = company_id;
+		this.companyId = companyId;
 	}
-	public Computer(Long id, String name, Timestamp introduced,Timestamp discontinued, Long company_id) {
+	public Computer(Long id, String name, Timestamp introduced,Timestamp discontinued, Long companyId) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
-		this.company_id = company_id;
+		this.companyId = companyId;
 	}
 	
 
@@ -79,16 +80,16 @@ public class Computer {
 		this.discontinued = discontinued;
 	}
 
-	public Long getCompany_id() {
-		return company_id;
+	public Long getCompanyId() {
+		return companyId;
 	}
-	public void setCompany_id(Long company_id) {
-		this.company_id = company_id;
+	public void setCompanyId(Long companyId) {
+		this.companyId = companyId;
 	}
 	@Override
 	public String toString() {
 		return "[id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
-				+ ", company_id=" + company_id + "]";
+				+ ", companyId=" + companyId + "]";
 	}
 	public Company getCompany() {
 		return company;

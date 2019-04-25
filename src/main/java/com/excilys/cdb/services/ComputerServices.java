@@ -26,6 +26,7 @@ import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Page;
 import com.excilys.cdb.repositories.CompanyRepository;
+import com.excilys.cdb.repositories.ComputerRepository;
 import com.excilys.cdb.util.enume.OrderBy;
 
 @Service
@@ -37,9 +38,11 @@ public class ComputerServices {
 	CompanyRepository companyRepository ;
 	
 	@Autowired
-	private ComputerDAO daoComputer;
+	ComputerRepository computerRepository;
+	
 	@Autowired
-	private CompanyDAO daoCompany;
+	private ComputerDAO daoComputer;
+
 	private Page pageDashboard;
 
 	/**
@@ -50,7 +53,7 @@ public class ComputerServices {
 	 */
 	public List<ComputerDTO> getListComputerToShowService(HttpServletRequest req) {
 
-		System.out.println(companyRepository.findAll());
+		//System.out.println(companyRepository.findAll());
 		pageDashboardInit(req);
 
 		List<Computer> listComputer = pageDashboard.getListeComputerToShow();
@@ -59,7 +62,7 @@ public class ComputerServices {
 
 		for (Computer computer : listComputer) {
 			Optional<Company> optionalCompany = listCompany.stream()
-					.filter(company -> company.getId() == computer.getCompany_id()).findFirst();
+					.filter(company -> company.getId() == computer.getCompanyId()).findFirst();
 			String nameCompnay = optionalCompany.isPresent() ? optionalCompany.get().getName() : "";
 			listComputerDTO.add(ComputerMapper.mapDTO(computer, nameCompnay));
 		}
@@ -80,7 +83,7 @@ public class ComputerServices {
 		Optional<Computer> optionalComputer = ComputerMapper.mapViewDtoToComputer(computerDto);
 		computer = optionalComputer.isPresent() ? optionalComputer.get() : new Computer();
 		if (isValidatedByTheBack(computer)) {
-			daoComputer.creat(computer);
+			computerRepository.save(computer);
 		} else {
 			throw new InvalidDataComputerException();
 		}
@@ -97,7 +100,7 @@ public class ComputerServices {
 		Optional<Computer> optionalComputer = ComputerMapper.mapViewDtoToComputer(computerDto);
 		computer = optionalComputer.isPresent() ? optionalComputer.get() : new Computer();
 		if (isValidatedByTheBack(computer)) {
-			daoComputer.update(computer);
+			computerRepository.save(computer);
 		} else {
 			throw new InvalidDataComputerException();
 		}
@@ -118,6 +121,8 @@ public class ComputerServices {
 
 		try {
 			daoComputer.delete(listeComputerToDelete);
+			
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DeleteDataException();
@@ -133,7 +138,7 @@ public class ComputerServices {
 	public boolean isValidatedByTheBack(Computer computer) {
 		boolean results = false;
 		if (computer.getIntroduced().before(computer.getDiscontinued())) {
-			Optional<Company> optionalCompany = daoCompany.getById(computer.getCompany_id());
+			Optional<Company> optionalCompany =companyRepository.findById(computer.getCompanyId());
 			if (optionalCompany.isPresent()) {
 				results = true;
 			}
@@ -184,15 +189,15 @@ public class ComputerServices {
 
 		if (session.getAttribute("pageDashboard") == null) {
 			pageDashboard = new Page();
-			pageDashboard.setListeComputer(daoComputer.getList());
-			pageDashboard.setListeCompany(daoCompany.getList());
+			pageDashboard.setListeComputer(computerRepository.findAll());
+			pageDashboard.setListeCompany(companyRepository.findAll());
 			pageDashboard.setIndice(indice);
 			pageDashboard.updateListComputerWithNewNumberOfComputer(numberOfComputer);
 
 			session.setAttribute("pageDashboard", pageDashboard);
 		} else {
 			pageDashboard = (Page) session.getAttribute("pageDashboard");
-			pageDashboard.setListeCompany(daoCompany.getList());
+			pageDashboard.setListeCompany(companyRepository.findAll());
 			try {
 				int maxRang = pageDashboard.getListeComputer().size() / pageDashboard.getNumberOfComputer();
 				int minRang = 0;
@@ -221,7 +226,7 @@ public class ComputerServices {
 				pageDashboard.setListeComputer(listComputer);
 			}
 			if (searchParam == null & req.getParameter("orderBy") == null & req.getParameter("reversed") == null) {
-				pageDashboard.setListeComputer(daoComputer.getList());
+				pageDashboard.setListeComputer(computerRepository.findAll());
 			}
 			
 			if (numberOfComputerString != null) {
@@ -240,9 +245,9 @@ public class ComputerServices {
 
 		ComputerDTO computerDto = null;
 		try {
-			Computer computer = daoComputer.getById(computerID).orElseThrow(() -> new NoDataFoundException());
+			Computer computer = computerRepository.findById(computerID).orElseThrow(() -> new NoDataFoundException());
 			Optional<Company> optionalCompany = pageDashboard.getListeCompany().stream()
-					.filter(company -> company.getId() == computer.getCompany_id()).findFirst();
+					.filter(company -> company.getId() == computer.getCompanyId()).findFirst();
 			String nameCompnay = optionalCompany.isPresent() ? optionalCompany.get().getName() : "";
 			computerDto = ComputerMapper.mapDTO(computer, nameCompnay);
 		} catch (NoDataFoundException e) {
@@ -267,7 +272,8 @@ public class ComputerServices {
 	 */
 	public List<Computer> getFilterAllListComputer(String searchParam) {
 
-		List<Computer> listAllComputer = daoComputer.getList();
+
+		List<Computer> listAllComputer = computerRepository.findAll();
 		List<Computer> listAllFilter = new ArrayList<Computer>();
 
 		List<Company> listCompany = pageDashboard.getListeCompany();
