@@ -1,0 +1,7 @@
+/home/excilys/eclipse-workspace/multi-module/training-java/persistence/src/main/java/com/excilys/cdb/dao/ComputerDAO.java
+/home/excilys/eclipse-workspace/multi-module/training-java/persistence/src/main/java/com/excilys/cdb/persistence/config/SpringPersistenceConfiguration.java
+/home/excilys/eclipse-workspace/multi-module/training-java/persistence/src/main/java/com/excilys/cdb/repositories/CompanyRepository.java
+/home/excilys/eclipse-workspace/multi-module/training-java/persistence/src/main/java/com/excilys/cdb/dao/HikaricpConnection.java
+/home/excilys/eclipse-workspace/multi-module/training-java/persistence/src/main/java/com/excilys/cdb/dao/JDBCConnection.java
+/home/excilys/eclipse-workspace/multi-module/training-java/persistence/src/main/java/com/excilys/cdb/dao/CompanyDAO.java
+/home/excilys/eclipse-workspace/multi-module/training-java/persistence/src/main/java/com/excilys/cdb/repositories/ComputerRepository.java

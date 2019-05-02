@@ -1,0 +1,4 @@
+com/excilys/cdb/web/config/WebInitializer.class
+com/excilys/cdb/controller/DashboardController.class
+com/excilys/cdb/web/config/SpringWebConfiguration.class
+com/excilys/cdb/controller/ComputerController.class

@@ -1,0 +1,7 @@
+com/excilys/cdb/persistence/config/SpringPersistenceConfiguration.class
+com/excilys/cdb/dao/ComputerDAO.class
+com/excilys/cdb/dao/JDBCConnection.class
+com/excilys/cdb/repositories/CompanyRepository.class
+com/excilys/cdb/dao/HikaricpConnection.class
+com/excilys/cdb/repositories/ComputerRepository.class
+com/excilys/cdb/dao/CompanyDAO.class
