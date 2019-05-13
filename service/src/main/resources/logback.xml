@@ -57,7 +57,7 @@
 
 	</appender>
 	<root>
-		<appender-ref ref="STDOUT" />
+		<appender-ref ref="STDOUT"  level="INFO"/>
 	</root>
 
 	<logger name="service" level="DEBUG">

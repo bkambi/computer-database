@@ -1,11 +1,13 @@
 package com.excilys.cdb.model;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,15 +16,13 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "company")
-public class Company {
+public class Company implements Serializable  {
 
 @Id @GeneratedValue(strategy = GenerationType.IDENTITY)	
 private Long id;
 @Column(name = "name")private 
 String name;
 
-@OneToMany(mappedBy = "company",orphanRemoval=true,cascade = CascadeType.ALL)
-private Set<Computer> computers;
 
 	public Company() {
 		super();
@@ -49,12 +49,6 @@ private Set<Computer> computers;
 		this.name = name;
 	}
 	
-	public Set<Computer> getComputers() {
-		return computers;
-	}
-	public void setComputers(Set<Computer> computers) {
-		this.computers = computers;
-	}
 	@Override
 	public String toString() {
 		return "Company [id=" + id + ", name=" + name + "]";

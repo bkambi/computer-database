@@ -4,11 +4,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import com.excilys.cdb.config.SpringBindingConfiguration;
+import com.excilys.cdb.controller.rest.ComputerRestController;
 import com.excilys.cdb.services.SpringServiceConfiguration;
 
 @Configuration
 @ComponentScan(basePackageClasses = {SpringServiceConfiguration.class,
-		SpringBindingConfiguration.class},basePackages ="com.excilys.cdb.dao.dao")
+		SpringBindingConfiguration.class,ComputerRestController.class},basePackages ="com.excilys.cdb.dao.dao")
 public class ControllerConfig {
 
 }

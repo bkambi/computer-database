@@ -19,7 +19,6 @@ public class CompanyServices {
 	public Map<Long, String> handlerRequestForCompanies() {
 	return companyDAO.getList().stream()
 				.collect(Collectors.toMap(Company::getId, Company::getName));
-	
 	}
 
 }

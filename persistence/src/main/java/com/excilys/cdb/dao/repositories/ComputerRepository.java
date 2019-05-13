@@ -3,6 +3,8 @@ package com.excilys.cdb.dao.repositories;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
@@ -21,6 +23,9 @@ public interface ComputerRepository extends Repository<Computer, Long>{
 
 	@Transactional(readOnly = true)
 	public List<Computer> findAll();
+	
+	@Transactional(readOnly = true)
+	public Page<Computer> findByNameContains(String name,Pageable pageable);
 
 	@Transactional(readOnly = true)
 	public Long count();

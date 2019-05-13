@@ -1,10 +1,12 @@
 package com.excilys.cdb.model;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,7 +16,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "computer")
-public class Computer {
+public class Computer implements Serializable {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)	
 	private Long id ;
@@ -27,7 +29,7 @@ public class Computer {
 	@Column(name = "company_id")
 	private Long companyId ;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "company_id",referencedColumnName="id",insertable = false, updatable = false)
 	private Company company ;
 	
